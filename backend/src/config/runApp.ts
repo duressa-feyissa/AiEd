@@ -1,11 +1,15 @@
 import { Express, json } from 'express'
 import { Server } from 'http'
+import * as swaggerUi from "swagger-ui-express"
 import errorHandlingMiddleware from '../interfaces/middlewares/errorHandlingMiddleware'
 import routes from '../interfaces/routes'
+import * as swaggerDocument from "../swagger.json"
 
 export default async function (app: Express) {
   app.use(json())
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
   app.use((req, res, next) => {
+    
     app.use(json())
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader(

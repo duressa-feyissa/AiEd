@@ -1,0 +1,509 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AiEd Learning Assistant",
+    "version": "1.0.0",
+    "description": "AiEd Learning Assistant API Documentation"
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "verify": {
+            "type": "boolean"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date"
+          },
+          "school": {
+            "type": "string"
+          },
+          "grade": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "cover": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "role"]
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/users": {
+      "get": {
+        "summary": "Get all users",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "email": "duresafeyisa2025@gmail.com",
+                    "phone": "0912345678",
+                    "image": "https://res.cloudinary.com/123.jpg",
+                    "cover": "https://res.cloudinary.com/123.jpg",
+                    "role": "USER",
+                    "verify": false,
+                    "points": 0,
+                    "_id": "6570903a497e5790f47d13c9",
+                    "createAt": "2023-12-06T15:16:10.583Z",
+                    "__v": 0
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create user",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "email": "duresafeyisa2025@gmail.com",
+                    "phone": "0912345678",
+                    "image": "https://res.cloudinary.com/123.jpg",
+                    "cover": "https://res.cloudinary.com/123.jpg",
+                    "role": "USER",
+                    "verify": false,
+                    "points": 0,
+                    "_id": "6570903a497e5790f47d13c9",
+                    "createAt": "2023-12-06T15:16:10.583Z",
+                    "__v": 0
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "summary": "Get user by id",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "email": "duresafeyisa2025@gmail.com",
+                  "phone": "0912345678",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "cover": "https://res.cloudinary.com/123.jpg",
+                  "role": "USER",
+                  "verify": false,
+                  "points": 0,
+                  "_id": "6570903a497e5790f47d13c9",
+                  "createAt": "2023-12-06T15:16:10.583Z",
+                  "__v": 0
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by id",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "email": "duresafeyisa2025@gmail.com",
+                  "phone": "0912345678",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "cover": "https://res.cloudinary.com/123.jpg",
+                  "role": "USER",
+                  "verify": false,
+                  "points": 0,
+                  "_id": "6570903a497e5790f47d13c9",
+                  "createAt": "2023-12-06T15:16:10.583Z",
+                  "__v": 0
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user by id",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "email": "duresafeyisa2025@gmail.com",
+                  "phone": "0912345678",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "cover": "https://res.cloudinary.com/123.jpg",
+                  "role": "USER",
+                  "verify": false,
+                  "points": 0,
+                  "_id": "6570903a497e5790f47d13c9",
+                  "createAt": "2023-12-06T15:16:10.583Z",
+                  "__v": 0
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/users/email/{email}": {
+      "get": {
+        "summary": "Get user by email",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "User email",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "email": "duresafeyisa2025@gmail.com",
+                  "phone": "0912345678",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "cover": "https://res.cloudinary.com/123.jpg",
+                  "role": "USER",
+                  "verify": false,
+                  "points": 0,
+                  "_id": "6570903a497e5790f47d13c9",
+                  "createAt": "2023-12-06T15:16:10.583Z",
+                  "__v": 0
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/users/phone/{phone}": {
+      "get": {
+        "summary": "Get user by  phone",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "description": "User phone",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "email": "duresafeyisa2025@gmail.com",
+                  "phone": "0912345678",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "cover": "https://res.cloudinary.com/123.jpg",
+                  "role": "USER",
+                  "verify": false,
+                  "points": 0,
+                  "_id": "6570903a497e5790f47d13c9",
+                  "createAt": "2023-12-06T15:16:10.583Z",
+                  "__v": 0
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/users/username/{username}": {
+      "get": {
+        "summary": "Get user by  username",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "User username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "email": "duresafeyisa2025@gmail.com",
+                  "phone": "0912345678",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "cover": "https://res.cloudinary.com/123.jpg",
+                  "role": "USER",
+                  "verify": false,
+                  "points": 0,
+                  "_id": "6570903a497e5790f47d13c9",
+                  "createAt": "2023-12-06T15:16:10.583Z",
+                  "__v": 0
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/users/phone-or-email/{userOrEmail}": {
+      "get": {
+        "summary": "Get user by  phone or email",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "userOrEmail",
+            "in": "path",
+            "description": "User phone or email",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "email": "duresafeyisa2025@gmail.com",
+                  "phone": "0912345678",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "cover": "https://res.cloudinary.com/123.jpg",
+                  "role": "USER",
+                  "verify": false,
+                  "points": 0,
+                  "_id": "6570903a497e5790f47d13c9",
+                  "createAt": "2023-12-06T15:16:10.583Z",
+                  "__v": 0
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  }
+}

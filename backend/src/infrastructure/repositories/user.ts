@@ -1,8 +1,8 @@
-import { Document, ModifyResult, Types } from 'mongoose'
+import { Types } from 'mongoose'
 import CustomError from '../../config/error'
 import { IUser } from '../../domain/entities/user'
 import UserModel, {
-  IUser as MIUser,
+  IUser as MIUser, validateUser
 } from "../database/models/user"
 
 interface ViewAllUsersParams {
@@ -22,7 +22,7 @@ export type IUserRepositoryImpl = () => {
   findByPhone: (phone: string) => Promise<IUser>
   createUser: (user: IUser) => Promise<IUser>
 }
-
+const ROLES = ["ADMIN", "USER"] 
 export default function userRepositoryMongoDB() {
   const findById = (id: string): Promise<IUser> => {
     if (!Types.ObjectId.isValid(id)) {
@@ -70,18 +70,17 @@ export default function userRepositoryMongoDB() {
 
   const deleteUser = (id: string): Promise<IUser> => {
     if (!Types.ObjectId.isValid(id)) {
-      throw new CustomError(`${id} is not a valid user id`, 400)
+      throw new CustomError(`${id} is not a valid user id`, 400);
     }
 
     return UserModel.findByIdAndDelete(id)
-      .select('-password')
-      .then((result: ModifyResult<Document<IUser> | null>) => {
-        if (!result || !result.value) {
-          throw new CustomError(`User with id ${id} not found`, 404)
-        }
-
-        return result.value.toObject() as IUser
-      })
+    .select('-password')
+    .then((user: any) => {
+      if (!user) {
+        throw new CustomError(`User with id ${id} not found`, 404);
+      } 
+      return user.toObject() as IUser;
+    });
   }
 
   const findByEmail = (email: string): Promise<IUser> => {
@@ -117,13 +116,28 @@ export default function userRepositoryMongoDB() {
   }
 
   const createUser = async (user: IUser): Promise<IUser> => {
+    const { error } = validateUser(user);
+    if (error) throw new CustomError(error.details[0].message, 400);
+
     const existingUser = await UserModel.findOne({ email: user.email })
     if (existingUser) throw new CustomError(`Email ${user.email} is already in use`, 400)
+
+    if (user.phone) {
+      const existingUserByPhone = await UserModel.findOne({ phone: user.phone })
+      if (existingUserByPhone) throw new CustomError(`Phone ${user.phone} is already in use`, 400)
+    }
+    
+    if (user.username) {
+      const existingUserByUsername = await UserModel.findOne({ username: user.username })
+      if (existingUserByUsername) throw new CustomError(`Username ${user.username} is already in use`, 400)
+    }
 
     return UserModel.create(user).then(
       (user: MIUser) => user.toObject() as IUser
     )
   }
+
+ 
 
   return {
     findById,
