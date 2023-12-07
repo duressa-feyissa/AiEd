@@ -13,11 +13,11 @@ export interface IUser {
     grade?: string
     image?: string
     cover?: string
-    createAt: Date
+    createdAt: Date
     points?: number
   }
   
-  export default function user({
+  export default function User({
     _id,
     password,
     username,
@@ -25,13 +25,14 @@ export interface IUser {
     lastName,
     phone,
     role,
+    email,
     verify,
     dateOfBirth,
     school,
     grade,
     image,
     cover,
-    createAt,
+    createdAt,
     points,
   }: IUser) {
     return Object.freeze({
@@ -41,6 +42,7 @@ export interface IUser {
       getFirstName: () => firstName,
       getLastName: () => lastName,
       getPhone: () => phone,
+      getEmail: () => email,
       getRole: () => role,
       getVerify: () => verify,
       getDateOfBirth: () => dateOfBirth,
@@ -48,7 +50,7 @@ export interface IUser {
       getGrade: () => grade,
       getImage: () => image,
       getCover: () => cover,
-      getCreateAt: () => createAt,
+      getCreatedAt: () => createdAt,
       getPoints: () => points,
     })
   }

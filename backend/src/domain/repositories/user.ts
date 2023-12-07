@@ -1,4 +1,4 @@
-import { IUser } from '../../domain/entities/user'
+import User, { IUser } from '../../domain/entities/user'
 import userRepositoryMongoDB from '../../infrastructure/repositories/user'
 
 interface ViewAllUsersParams {
@@ -18,7 +18,7 @@ export type IUserRepository = (
   findByEmail: (email: string) => Promise<IUser>
   findByUsernameOrEmail: (usernameOrEmail: string) => Promise<IUser>
   findByPhone: (phone: string) => Promise<IUser>
-  createUser: (user: IUser) => Promise<IUser>
+  createUser: (user:  ReturnType<typeof User>) => Promise<IUser>
 }
 
 export default function userDbRepository(
@@ -34,7 +34,7 @@ export default function userDbRepository(
   const findByUsernameOrEmail = (usernameOrEmail: string) =>
     repository.findByUsernameOrEmail(usernameOrEmail)
   const findByPhone = (phone: string) => repository.findByPhone(phone)
-  const createUser = (user: IUser) => repository.createUser(user)
+  const createUser = (user: ReturnType<typeof User>) => repository.createUser(user)
 
   return {
     findById,
