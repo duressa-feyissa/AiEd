@@ -10,16 +10,17 @@ interface ViewAllUsersParams {
     sort?: Record<string, 1 | -1>
   }
 
-export type IUserRepositoryImpl = () => {
-  findById: (id: string) => Promise<IUser>
-  viewAllUsers: (params: ViewAllUsersParams) => Promise<IUser[]>
-  deleteUser: (id: string) => Promise<IUser>
-  findByUsername: (username: string) => Promise<IUser>
-  findByEmail: (email: string) => Promise<IUser>
-  findByUsernameOrEmail: (usernameOrEmail: string) => Promise<IUser>
-  findByPhone: (phone: string) => Promise<IUser>
-  createUser: (user: ReturnType<typeof User>) => Promise<IUser>
-}
+  export type IUserRepositoryImpl = () => {
+    findById: (id: string) => Promise<IUser>
+    viewAllUsers: (params: ViewAllUsersParams) => Promise<IUser[]>
+    deleteUser: (id: string) => Promise<IUser>
+    findByUsername: (username: string) => Promise<IUser>
+    findByEmail: (email: string) => Promise<IUser>
+    findByUsernameOrEmail: (usernameOrEmail: string) => Promise<IUser>
+    findByPhone: (phone: string) => Promise<IUser>
+    createUser: (user: ReturnType<typeof User>) => Promise<IUser>
+  }
+
 const ROLES = ["ADMIN", "USER"] 
 export default function userRepositoryMongoDB() {
   const findById = (id: string): Promise<IUser> => {
@@ -146,8 +147,6 @@ export default function userRepositoryMongoDB() {
       (user: IUser) => user 
     )
   }
-
- 
 
   return {
     findById,
