@@ -1,34 +1,36 @@
 import { Schema, model } from 'mongoose';
 import { IProblem } from '../../../domain/entities/problem';
 
-const source: string[] = ['gpt-4', 'gpt-3', 'model', 'uue', 'book', 'extreme'];
-const difficulty: string[] = ['normal', 'easy', 'medium', 'hard'];
-const target: string[] = ['elementary', 'university', 'highschool', 'general'];
-const type: string[] = ['text', 'image', 'equation', 'video'];
+const SOURCE_OPTIONS: string[] = ['gpt-4', 'gpt-3', 'model', 'uue', 'book', 'extreme'];
+const DIFFICULTY_OPTIONS: string[] = ['normal', 'easy', 'medium', 'hard'];
+const TARGET_OPTIONS: string[] = ['elementary', 'university', 'highschool', 'general'];
+const TYPE_OPTIONS: string[] = ['text', 'image', 'equation', 'video'];
+const ANSWER_TYPE_OPTIONS: string[] = ['options', 'short', 'trueFalse'];
 
 const problemSchema = new Schema<IProblem>({
-  published: { type: Boolean, required: true },
+  published: { type: Boolean, default:false },
   source: {
-    name: { type: String, enum: source, required: true },
+    name: { type: String, enum: SOURCE_OPTIONS, required: true },
     value: { type: String, required: true },
+    year: { type: Number },
   },
   details: {
-    target: { type: String, enum: target, required: true },
+    target: { type: String, enum: TARGET_OPTIONS, required: true },
     grade: { type: Number },
     unit: { type: Number },
     courses: { type: String, required: true },
     topic: { type: String, required: true },
-    difficulty: { type: String, enum: difficulty, required: true },
+    difficulty: { type: String, enum: DIFFICULTY_OPTIONS, required: true },
   },
   content: {
-    type: { type: String, enum: type, required: true },
+    type: { type: String, enum: TYPE_OPTIONS, required: true },
     text: { type: String },
     image: { type: String },
     equation: { type: String },
     video: { type: String },
   },
   answer: {
-    type: { type: String, required: true },
+    type: { type: String, enum: ANSWER_TYPE_OPTIONS, required: true },
     options: {
       correct: { type: String },
       choice: [{
@@ -47,6 +49,8 @@ const problemSchema = new Schema<IProblem>({
     },
   },
 });
+
+problemSchema.index({ 'details.target': 1, 'details.difficulty': 1 });
 
 const ProblemModel = model<IProblem>('Problem', problemSchema);
 

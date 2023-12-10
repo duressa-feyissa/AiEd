@@ -19,7 +19,8 @@ export default function login(params: LoginParams, userRepository: ReturnType<ty
         const error = new CustomError("Invalid email or password", 401);
         throw error;
       }
-     
+      
+
       const isMatch = auth.compare(password, user.password === undefined ? '' : user.password);
      
       if (!isMatch) {
@@ -27,7 +28,14 @@ export default function login(params: LoginParams, userRepository: ReturnType<ty
 
         throw error;
       }
-      return auth.generateToken(user);
+      const userIdString = user._id ? user._id.toString() : undefined;
+
+      const newUser: IUser = {
+        ...user,
+        _id: userIdString,
+      };
+
+      return auth.generateToken(newUser);
     });
   }
   

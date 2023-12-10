@@ -1,6 +1,6 @@
 import * as Joi from 'joi'
 
-const userRoles: string[] = ['ADMIN', 'USER']
+const userRoles: string[] = ['ADMIN', 'MASTER', 'USER']
 
 export default function validateUser(user: any)  {
     const schema = Joi.object({
@@ -13,7 +13,7 @@ export default function validateUser(user: any)  {
       role: Joi.string().trim().valid(...userRoles),
       dateOfBirth: Joi.date(),
       school: Joi.string().trim().min(3).max(30),
-      grade: Joi.string().trim().min(3).max(30),
+      grade: Joi.string().trim().min(1).max(30),
       image: Joi.string().trim(),
       cover: Joi.string().trim(),
     })

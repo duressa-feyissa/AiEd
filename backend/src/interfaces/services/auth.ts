@@ -6,7 +6,7 @@ import { IUser } from '../../domain/entities/user';
 export type IAuthService = () => {
     encryptPassword: (password: string) => string;
     compare: (password: string, hashedPassword: string) => boolean;
-    verify: (token: string) => IUser;
+    verify: (token: string) => Object;
     generateToken: (payload: IUser) => string;
   };
 
@@ -20,10 +20,11 @@ export default function authService() {
       bcrypt.compareSync(password, hashedPassword);
   
     const verify = function verify(token: string) {
-        return verifyBase(token, env.JWT) as IUser
+        return verifyBase(token, env.JWT) as Object
       }
   
     const generateToken = function sign(payload: IUser) {
+
         return signBase(payload, env.JWT, { expiresIn: '1d' })
       }
   

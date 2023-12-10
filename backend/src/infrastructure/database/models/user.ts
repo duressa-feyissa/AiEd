@@ -1,8 +1,8 @@
-import { IUser } from '../../../domain/entities/user'
 import mongoose, { Schema } from 'mongoose'
+import { IUser } from '../../../domain/entities/user'
 const { String } = mongoose.Schema.Types
 
-const userRoles: string[] = ['ADMIN', 'USER']
+const userRoles: string[] = ['ADMIN', 'MASTER', 'USER']
 
 const UserSchema: Schema<IUser> = new Schema({
   username: {

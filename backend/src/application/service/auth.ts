@@ -6,7 +6,7 @@ export type IAuthServiceInterface = (
 ) => {
   encryptPassword: (password: string) => string;
   compare: (password: string, hashedPassword: string) => boolean;
-  verify: (token: string) => IUser;
+  verify: (token: string) => Object;
   generateToken: (payload: IUser) => string;
 };
 

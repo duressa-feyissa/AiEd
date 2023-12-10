@@ -19,6 +19,18 @@
       }
     },
     "schemas": {
+      "Auth": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "password"]
+      },
       "User": {
         "type": "object",
         "properties": {
@@ -64,10 +76,125 @@
           }
         },
         "required": ["email", "role"]
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "published": { "type": "boolean" },
+          "source": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "value": { "type": "string" },
+              "year": { "type": "number" }
+            },
+            "required": ["name", "value"]
+          },
+          "details": {
+            "type": "object",
+            "properties": {
+              "target": { "type": "string" },
+              "grade": { "type": "number" },
+              "unit": { "type": "number" },
+              "courses": { "type": "string" },
+              "topic": { "type": "string" },
+              "difficulty": { "type": "string" }
+            },
+            "required": ["target", "courses", "topic", "difficulty"]
+          },
+          "content": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string" },
+              "text": { "type": "string" },
+              "image": { "type": "string" },
+              "equation": { "type": "string" },
+              "video": { "type": "string" }
+            },
+            "required": []
+          },
+          "answer": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string" },
+              "options": {
+                "type": "object",
+                "properties": {
+                  "correct": { "type": "string" },
+                  "choice": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "text": { "type": "string" },
+                        "image": { "type": "string" },
+                        "equation": { "type": "string" },
+                        "video": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              },
+              "short": {
+                "type": "object",
+                "properties": {
+                  "correct": { "type": "string" }
+                }
+              },
+              "trueFalse": {
+                "type": "object",
+                "properties": {
+                  "correct": { "type": "string" }
+                }
+              }
+            },
+            "anyOf": [
+              { "required": ["options"] },
+              { "required": ["short"] },
+              { "required": ["trueFalse"] }
+            ]
+          }
+        },
+        "required": ["published", "source", "details", "content", "answer"]
       }
     }
   },
   "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "Login",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Auth"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
     "/api/v1/users": {
       "get": {
         "summary": "Get all users",
@@ -501,6 +628,327 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/problems": {
+      "post": {
+        "summary": "Create a new problem",
+        "tags": ["Problems"],
+        "requestBody": {
+          "description": "Problem data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Problem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created a new problem",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "published": true,
+                  "source": {
+                    "name": "UUE",
+                    "value": "University Entrance Exam of Ethiopia(2012)",
+                    "year": 2012
+                  },
+                  "details": {
+                    "target": "Grade 9",
+                    "grade": 9,
+                    "unit": 1,
+                    "courses": "Mathematics",
+                    "topic": "Algebra",
+                    "difficulty": "Easy"
+                  },
+                  "content": {
+                    "type": "text",
+                    "text": "What is the value of x in the equation 2x + 3 = 9?",
+                    "image": "",
+                    "equation": "",
+                    "video": ""
+                  },
+                  "answer": {
+                    "type": "short",
+                    "short": {
+                      "correct": "3"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all problems",
+        "tags": ["Problems"],
+        "responses": {
+          "200": {
+            "description": "Successfully get all problems",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                    "published": true,
+                    "source": {
+                      "name": "UUE",
+                      "value": "University Entrance Exam of Ethiopia(2012)",
+                      "year": 2012
+                    },
+                    "details": {
+                      "target": "Grade 9",
+                      "grade": 9,
+                      "unit": 1,
+                      "courses": "Mathematics",
+                      "topic": "Algebra",
+                      "difficulty": "Easy"
+                    },
+                    "content": {
+                      "type": "text",
+                      "text": "What is the value of x in the equation 2x + 3 = 9?",
+                      "image": "",
+                      "equation": "",
+                      "video": ""
+                    },
+                    "answer": {
+                      "type": "short",
+                      "short": {
+                        "correct": "3"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/problems/{id}": {
+      "get": {
+        "summary": "Get problem by id",
+        "tags": ["Problems"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Problem id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get problem by id",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "published": true,
+                  "source": {
+                    "name": "UUE",
+                    "value": "University Entrance Exam of Ethiopia(2012)",
+                    "year": 2012
+                  },
+                  "details": {
+                    "target": "Grade 9",
+                    "grade": 9,
+                    "unit": 1,
+                    "courses": "Mathematics",
+                    "topic": "Algebra",
+                    "difficulty": "Easy"
+                  },
+                  "content": {
+                    "type": "text",
+                    "text": "What is the value of x in the equation 2x + 3 = 9?",
+                    "image": "",
+                    "equation": "",
+                    "video": ""
+                  },
+                  "answer": {
+                    "type": "short",
+                    "short": {
+                      "correct": "3"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete problem by id",
+        "tags": ["Problems"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Problem id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully delete problem by id",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "published": true,
+                  "source": {
+                    "name": "UUE",
+                    "value": "University Entrance Exam of Ethiopia(2012)",
+                    "year": 2012
+                  },
+                  "details": {
+                    "target": "Grade 9",
+                    "grade": 9,
+                    "unit": 1,
+                    "courses": "Mathematics",
+                    "topic": "Algebra",
+                    "difficulty": "Easy"
+                  },
+                  "content": {
+                    "type": "text",
+                    "text": "What is the value of x in the equation 2x + 3 = 9?",
+                    "image": "",
+                    "equation": "",
+                    "video": ""
+                  },
+                  "answer": {
+                    "type": "short",
+                    "short": {
+                      "correct": "3"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update problem by id",
+        "tags": ["Problems"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Problem id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Problem data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Problem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully update problem by id",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "published": true,
+                  "source": {
+                    "name": "UUE",
+                    "value": "University Entrance Exam of Ethiopia(2012)",
+                    "year": 2012
+                  },
+                  "details": {
+                    "target": "Grade 9",
+                    "grade": 9,
+                    "unit": 1,
+                    "courses": "Mathematics",
+                    "topic": "Algebra",
+                    "difficulty": "Easy"
+                  },
+                  "content": {
+                    "type": "text",
+                    "text": "What is the value of x in the equation 2x + 3 = 9?",
+                    "image": "",
+                    "equation": "",
+                    "video": ""
+                  },
+                  "answer": {
+                    "type": "short",
+                    "short": {
+                      "correct": "3"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

@@ -53,6 +53,11 @@ export default function problemRepositoryMongoDB() {
 
   const createProblem = (problem: ReturnType<typeof Problem>) => {
     return ProblemModel.create({
+      published: problem.getPublished(),
+      source: problem.getSource(),
+      details: problem.getDetails(),
+      content: problem.getContent(),
+      answer: problem.getAnswer(),
 
     })
       .then((problem: IProblem) => problem )

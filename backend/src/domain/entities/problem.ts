@@ -2,6 +2,7 @@ const source: string[] = ['gpt-4', 'gpt-3', 'model', 'uue', 'book', 'extreme'];
 const difficulty: string[] = ['normal', 'easy', 'medium', 'hard'];
 const target: string[] = ['elementary', 'university', 'highschool', 'general'];
 const type: string[] = ['text', 'image', 'equation', 'video'];
+const answerType: string[] = ['options', 'short', 'trueFalse'];
 
 export interface IProblem {
   _id?: string;
@@ -9,6 +10,7 @@ export interface IProblem {
   source: {
     name: typeof source[number];
     value: string;
+    year?: number;
   };
   details: {
     target: typeof target[number];
@@ -26,11 +28,12 @@ export interface IProblem {
     video?: string;
   };
   answer: {
-    type: string;
+    type: typeof answerType[number];
     options?: {
       correct: string;
       choice: {
         id: string;
+        type: typeof type[number];
         text?: string;
         image?: string;
         equation?: string;
