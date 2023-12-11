@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import CustomError from "../../config/error";
-import Contest, { IContest } from "@/domain/entities/contest";
+import Contest, { IContest } from "../../domain/entities/contest";
 import ContestModel from "../database/models/contest";
 
 interface ViewAllContestParams {

@@ -1,18 +1,34 @@
-import { IProblem } from "./problem";
-import { IUser } from "./user";
 const modeType: string[] = ["marathon", "killAndPass", "custom"];
+const CONTEST_MODE_OPTIONS: string[] = ['marathon', 'killAndPass', 'custom'];
+const TYPE_OPTIONS: string[] = ['text', 'image', 'video'];
 
 export interface IContest {
-  _id?: string;
-  title?: string;
-  mode?: (typeof modeType)[number];
-  description?: string;
-  sponsor?: string;
-  problems: string[];
-  startTime?: Date;
-  duration: Number;
-  participants?: string[];
-  creator?: { _id: string };
+  _id: string;
+  title: string;
+  mode: typeof CONTEST_MODE_OPTIONS[number];
+  description?: {
+    type: typeof TYPE_OPTIONS[number];
+    text?: string;
+    image?: string;
+    video?: string;
+  }[];
+  sponsor?: {
+    type: typeof TYPE_OPTIONS[number];
+    text?: string;
+    image?: string;
+    video?: string;
+  }[];
+  problems: [id: string]
+  startTime: Date;
+  duration: number;
+  participants?: {
+    user: string,
+    registeredAt: Date;
+    submissions?: [id: string];
+  }[];
+  creator?: {
+    _id: string;
+  };
   createdAt: Date;
   updatedAt: Date;
 }
@@ -28,10 +44,8 @@ export default function Contest({
   duration,
   participants,
   creator,
-  createdAt,
-  updatedAt,
 }: IContest) {
-  return Object.freeze({
+  return {
     getId: () => _id,
     getTitle: () => title,
     getMode: () => mode,
@@ -42,5 +56,7 @@ export default function Contest({
     getDuration: () => duration,
     getParticipants: () => participants,
     getCreator: () => creator,
-  });
+  };
 }
+
+

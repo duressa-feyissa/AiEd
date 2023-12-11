@@ -82,7 +82,15 @@ export default function problemRepositoryMongoDB() {
       throw new CustomError(`${id} is not a valid problem id`, 400)
     }
 
-    return ProblemModel.findByIdAndUpdate(id, problem, { new: true })
+
+    return ProblemModel.findByIdAndUpdate(id, {
+      _id: id,
+      published: problem.getPublished(),
+      source: problem.getSource(),
+      details: problem.getDetails(),
+      content: problem.getContent(),
+      answer: problem.getAnswer(),
+    }, { new: true })
       .then((problem: any) => {
         if (!problem) {
           throw new CustomError(`Problem with id ${id} not found`, 404)

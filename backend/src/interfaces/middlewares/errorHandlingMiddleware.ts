@@ -7,7 +7,10 @@ export default function errorHandlingMiddleware(
   req: Request, res: Response, next: NextFunction) {
 
   const statusCode = err instanceof CustomError ? err.statusCode : 500;
-  const message = err instanceof CustomError ? err.message : 'Internal Server Error';
+  const message = err.message;
+
+  console.log(err);
 
   res.status(statusCode).json({ status: statusCode, message: message });
 }
+

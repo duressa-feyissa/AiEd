@@ -8,7 +8,7 @@ const TYPE_OPTIONS: string[] = ['text', 'image', 'equation', 'video'];
 const ANSWER_TYPE_OPTIONS: string[] = ['options', 'short', 'trueFalse'];
 
 const problemSchema = new Schema<IProblem>({
-  published: { type: Boolean, default:false },
+  published: { type: Boolean, default: false },
   source: {
     name: { type: String, enum: SOURCE_OPTIONS, required: true },
     value: { type: String, required: true },
@@ -48,9 +48,12 @@ const problemSchema = new Schema<IProblem>({
       correct: { type: String },
     },
   },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
-problemSchema.index({ 'details.target': 1, 'details.difficulty': 1 });
+problemSchema.index({ 'details.target': 1 });
+problemSchema.index({ 'details.difficulty': 1 });
 
 const ProblemModel = model<IProblem>('Problem', problemSchema);
 

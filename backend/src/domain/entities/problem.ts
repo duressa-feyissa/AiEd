@@ -47,6 +47,8 @@ export interface IProblem {
       correct: string;
     };
   };
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export default function Problem({
@@ -56,6 +58,8 @@ export default function Problem({
   details,
   content,
   answer,
+  createdAt,
+  updatedAt,
 }: IProblem) {
   return Object.freeze({
     getId: () => _id,
@@ -64,5 +68,7 @@ export default function Problem({
     getDetails: () => details,
     getContent: () => content,
     getAnswer: () => answer,
+    getCreatedAt: () => createdAt,
+    getUpdatedAt: () => updatedAt,
   });
 }
