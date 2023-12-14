@@ -770,6 +770,121 @@
       "get": {
         "summary": "Get all problems",
         "tags": ["Problems"],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "Skip number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of participants per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Field to sort by",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "difficulty",
+            "in": "query",
+            "description": "Difficulty to filter by",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "grade",
+            "in": "query",
+            "description": "Array of grades to filter by",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "courses",
+            "in": "query",
+            "description": "Array of courses to filter by",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "target",
+            "in": "query",
+            "description": "Array of targets to filter by",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "Source to filter by",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "contentType",
+            "in": "query",
+            "description": "Content type to filter by",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Year to filter by",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successfully get all problems",
@@ -1148,31 +1263,28 @@
             "description": "Successfully created a new contest",
             "content": {
               "application/json": {
-                "example": {
-                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5e",
-                  "title": "Physics Contest Week 3",
-                  "image": "https://res.cloudinary.com/123.jpg",
-                  "mode": "marathon",
-                  "description": "Don't Miss It. Starts on Monday April 19, 2023 at 00:00:00LT",
-                  "sponsor": "Sponsored by Birhanu Nega",
-
-                  "problems": [
-                    {
-                      "id": "5f7f5f5f5f5f5f5f5f5f5f5f"
-                    }
-                  ],
-                  "startTime": "2023-12-06T15:16:10.583Z",
-                  "duration": "200",
-                  "participants": [
-                    {
-                      "id": "5f7f5f5f5f5f5f5f5f5f5f5c",
-                      "registeredAt": "2023-12-06T15:16:10.583Z"
-                    }
-                  ],
-                  "creator": {
-                    "id": "5f7f5f5f5f5f5f5f5f5f5f5c"
+                "_id": "6579deee5aaebbbbd523ce03",
+                "title": "Science Quiz",
+                "image": "https://res.cloudinary.com/123.jpg",
+                "mode": "custom",
+                "description": [
+                  {
+                    "type": "text",
+                    "text": "Test your knowledge in various scientific fields!",
+                    "_id": "6579deee5aaebbbbd523ce04"
                   }
-                }
+                ],
+                "sponsor": [
+                  {
+                    "type": "text",
+                    "text": "Sponsored by XYZ Corporation",
+                    "_id": "6579deee5aaebbbbd523ce05"
+                  }
+                ],
+                "startTime": "2023-02-15T15:30:00.000Z",
+                "duration": 90,
+                "creator": "6575603d3b4e4d629afcda7e",
+                "__v": 0
               }
             }
           },
@@ -1190,6 +1302,46 @@
       "get": {
         "summary": "Get all contests",
         "tags": ["Contests"],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "Skip number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of participants per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Field to sort by",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Field to search",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successfully get all contests",
@@ -1940,7 +2092,7 @@
     },
     "/api/v1/contests/{id}/info": {
       "get": {
-        "summary": "Get contest creator",
+        "summary": "Get contest info",
         "tags": ["Contests"],
         "parameters": [
           {
