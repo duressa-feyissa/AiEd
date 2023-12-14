@@ -6,6 +6,13 @@ interface ViewAllProblemParams {
     limit: number
     search?: string
     sort?: Record<string, 1 | -1>
+    difficulty?: string[],
+    grade?: string[],
+    courses?: string[],
+    target?: string[],
+    source?: string[],
+    contentType?: string[],
+    year?: string[],
   }
 
 export type IProblemRepository = (

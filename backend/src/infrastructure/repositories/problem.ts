@@ -8,6 +8,13 @@ interface ViewAllProblemParams {
     limit: number
     search?: string
     sort?: Record<string, 1 | -1>
+    difficulty?: string[],
+    grade?: string[],
+    courses?: string[],
+    target?: string[],
+    source?: string[],
+    contentType?: string[],
+    year?: string[],
   }
 
 export type IProblemRepositoryImpl = () => {
@@ -33,24 +40,46 @@ export default function problemRepositoryMongoDB() {
       })
   }
 
-  const viewAllProblem = (params: ViewAllProblemParams) => {
-    const { skip, limit, search, sort } = params
+    const viewAllProblem = (params: ViewAllProblemParams) => {
+      const { skip, limit, difficulty, grade, courses, target, source, contentType, sort, year } = params;
     
-    const query: { [key: string]: unknown } = {}
-    if (search) {
-      query.$or = [
-        { source: { $regex: search, $options: 'i' } },
-        { details: { $regex: search, $options: 'i' } },
-      ]
-    }
+      const query: any = {};
+    
+      if (difficulty && Array.isArray(difficulty) && difficulty.length > 0) {
+        query['details.difficulty'] = { $in: difficulty };
+      }
+    
+      if (grade && Array.isArray(grade) && grade.length > 0) {
+        query['details.grade'] = { $in: grade };
+      }
+    
+      if (courses && Array.isArray(courses) && courses.length > 0) {
+        query['details.courses'] = { $in: courses };
+      }
+    
+      if (target && Array.isArray(target) && target.length > 0) {
+        query['details.target'] = { $in: target };
+      }
+    
+      if (source && Array.isArray(source) && source.length > 0) {
+        query['source.name'] = source;
+      }
+    
+      if (contentType && Array.isArray(contentType) && contentType.length > 0) {
+        query['answer.type'] = contentType;
+      }
 
-    return ProblemModel.find(query)
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .then((problems: IProblem[]) => problems.map((problem) => problem ))
-  }
+      if (year && Array.isArray(year) && year.length > 0) {
+        query['source.year'] = { $in: year };
+      }
 
+      return ProblemModel.find(query)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .then((problems: IProblem[]) => problems.map((problem) => problem));
+    };
+  
   const createProblem = (problem: ReturnType<typeof Problem>) => {
     return ProblemModel.create({
       published: problem.getPublished(),

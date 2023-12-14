@@ -25,13 +25,21 @@ export default function ProblemController(
         res: Response,
         next: NextFunction
       ): void => {
-        const { skip = '0', limit = '10', search, sort } = req.query
+        const { skip = '0', limit = '10', search, sort, difficulty, grade, courses, target, source, contentType, year } = req.query
+
     
         const options = {
           skip: parseInt(typeof skip === 'string' ? skip : '0', 10),
           limit: parseInt(typeof limit === 'string' ? limit : '10', 10),
           search: search as string,
           sort: typeof sort === 'string' ? parseSortParameter(sort) : undefined,
+          difficulty: typeof difficulty === 'string' ? difficulty.split(',') : undefined,
+          grade: typeof grade === 'string' ? grade.split(',') : undefined,
+          courses: typeof courses === 'string' ? courses.split(',') : undefined,
+           target: typeof target === 'string' ? target.split(',') : undefined,
+          source: typeof source === 'string' ? source.split(',') : undefined,
+          contentType: typeof contentType === 'string' ? contentType.split(',') : undefined,
+          year: typeof year === 'string' ? year.split(',') : undefined,
         }
     
         viewAllProblem(options, dbRepository)

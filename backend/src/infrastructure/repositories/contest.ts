@@ -123,15 +123,13 @@ export default function contestRepositoryMongoDB() {
 
   const viewAllContest = (params: ViewAllContestParams) => {
     const { skip, limit, search, sort } = params;
-
+  
     const query: { [key: string]: unknown } = {};
     if (search) {
-      query.$or = [
-        { source: { $regex: search, $options: "i" } },
-        { details: { $regex: search, $options: "i" } },
-      ];
-    }
 
+      query.title = new RegExp(search, 'i');
+    }
+  
     return ContestModel.find(query)
       .sort(sort)
       .skip(skip)
@@ -139,6 +137,7 @@ export default function contestRepositoryMongoDB() {
       .select('-participants -problems')
       .then((contests: IContest[]) => contests.map((contest) => contest));
   };
+  
 
   const createContest = (contest: ReturnType<typeof Contest>) => {
     return ContestModel.create({

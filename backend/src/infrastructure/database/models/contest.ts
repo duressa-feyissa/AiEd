@@ -37,8 +37,6 @@ const contestSchema = new Schema<IContest>({
       user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
-        unique: true,
       },
       registeredAt: { type: Date, default: Date.now, required: true },
       points: { type: Number, default: 0 },
