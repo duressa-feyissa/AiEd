@@ -1,10 +1,10 @@
-const modeType: string[] = ["marathon", "killAndPass", "custom"];
 const CONTEST_MODE_OPTIONS: string[] = ['marathon', 'killAndPass', 'custom'];
 const TYPE_OPTIONS: string[] = ['text', 'image', 'video'];
 
 export interface IContest {
   _id: string;
   title: string;
+  image: string;
   mode: typeof CONTEST_MODE_OPTIONS[number];
   description?: {
     type: typeof TYPE_OPTIONS[number];
@@ -37,6 +37,7 @@ export default function Contest({
   _id,
   title,
   mode,
+  image,
   description,
   sponsor,
   problems,
@@ -49,6 +50,7 @@ export default function Contest({
     getId: () => _id,
     getTitle: () => title,
     getMode: () => mode,
+    getImage: () => image,
     getDescription: () => description,
     getSponsor: () => sponsor,
     getProblems: () => problems,

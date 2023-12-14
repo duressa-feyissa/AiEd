@@ -3,6 +3,7 @@ const difficulty: string[] = ['normal', 'easy', 'medium', 'hard'];
 const target: string[] = ['elementary', 'university', 'highschool', 'general'];
 const type: string[] = ['text', 'image', 'equation', 'video'];
 const answerType: string[] = ['options', 'short', 'trueFalse'];
+const courses: string[] = ['mathematics', 'biology', 'physics', 'chemistry', 'history', 'geography', 'civics', 'economics', 'amharic', 'english', 'civics', 'computer', 'general'];
 
 export interface IProblem {
   _id?: string;
@@ -16,7 +17,7 @@ export interface IProblem {
     target: typeof target[number];
     grade?: number;
     unit?: number;
-    courses: string;
+    courses: typeof courses[number];
     topic: string;
     difficulty: typeof difficulty[number];
   };

@@ -6,6 +6,7 @@ const DIFFICULTY_OPTIONS: string[] = ['normal', 'easy', 'medium', 'hard'];
 const TARGET_OPTIONS: string[] = ['elementary', 'university', 'highschool', 'general'];
 const TYPE_OPTIONS: string[] = ['text', 'image', 'equation', 'video'];
 const ANSWER_TYPE_OPTIONS: string[] = ['options', 'short', 'trueFalse'];
+const COURSES_OPTIONS: string[] = ['mathematics', 'biology', 'physics', 'chemistry', 'history', 'geography', 'civics', 'economics', 'amharic', 'english', 'civics', 'computer', 'general'];
 
 const problemSchema = new Schema<IProblem>({
   published: { type: Boolean, default: false },
@@ -18,7 +19,7 @@ const problemSchema = new Schema<IProblem>({
     target: { type: String, enum: TARGET_OPTIONS, required: true },
     grade: { type: Number },
     unit: { type: Number },
-    courses: { type: String, required: true },
+    courses: { type: String, enum: COURSES_OPTIONS, required: true },
     topic: { type: String, required: true },
     difficulty: { type: String, enum: DIFFICULTY_OPTIONS, required: true },
   },
@@ -35,6 +36,7 @@ const problemSchema = new Schema<IProblem>({
       correct: { type: String },
       choice: [{
         id: { type: String },
+        type: { type: String, enum: TYPE_OPTIONS },
         text: { type: String },
         image: { type: String },
         equation: { type: String },

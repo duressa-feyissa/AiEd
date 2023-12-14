@@ -9,8 +9,6 @@ export default function errorHandlingMiddleware(
   const statusCode = err instanceof CustomError ? err.statusCode : 500;
   const message = err.message;
 
-  console.log(err);
-
   res.status(statusCode).json({ status: statusCode, message: message });
 }
 

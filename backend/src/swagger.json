@@ -163,25 +163,70 @@
         "properties": {
           "title": { "type": "string" },
           "mode": { "type": "string" },
-          "description": { "type": "string" },
-          "sponsor": { "type": "string" },
-
-          "problems": [
-            {
+          "image": { "type": "string" },
+          "description": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string" },
+                "text": { "type": "string" },
+                "image": { "type": "string" },
+                "video": { "type": "string" }
+              }
+            }
+          },
+          "sponsor": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string" },
+                "text": { "type": "string" },
+                "image": { "type": "string" },
+                "video": { "type": "string" }
+              }
+            }
+          },
+          "problems": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" }
+              }
+            }
+          },
+          "startTime": { "type": "string", "format": "date-time" },
+          "duration": { "type": "number" },
+          "participants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "registeredAt": { "type": "string", "format": "date-time" }
+              }
+            }
+          },
+          "creator": {
+            "type": "object",
+            "properties": {
               "id": { "type": "string" }
             }
-          ],
-          "startTime": { "type": "string", "format": "date" },
-          "duration": { "type": "number" },
-          "participants": [
-            {
-              "id": { "type": "string" },
-              "registeredAt": { "type": "string", "format": "date" }
-            }
-          ],
-          "creator": {
-            "id": { "type": "string" }
           }
+        }
+      },
+      "Submission": {
+        "type": "object",
+        "properties": {
+          "contest": { "type": "string" },
+          "problem": { "type": "string" },
+          "user": { "type": "string" },
+          "userAnswer": { "type": "string" },
+          "point": { "type": "number" },
+          "isCorrect": { "type": "boolean" },
+          "attemptedAt": { "type": "string", "format": "date" }
         }
       }
     }
@@ -732,34 +777,60 @@
               "application/json": {
                 "example": [
                   {
-                    "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
-                    "published": true,
                     "source": {
-                      "name": "UUE",
-                      "value": "University Entrance Exam of Ethiopia(2012)",
-                      "year": 2012
+                      "name": "book",
+                      "value": "Example Source",
+                      "year": 2022
                     },
                     "details": {
-                      "target": "Grade 9",
-                      "grade": 9,
-                      "unit": 1,
+                      "target": "highschool",
+                      "grade": 10,
+                      "unit": 3,
                       "courses": "Mathematics",
                       "topic": "Algebra",
-                      "difficulty": "Easy"
+                      "difficulty": "medium"
                     },
                     "content": {
                       "type": "text",
-                      "text": "What is the value of x in the equation 2x + 3 = 9?",
-                      "image": "",
-                      "equation": "",
-                      "video": ""
+                      "text": "Solve for x: 2x + 5 = 15"
                     },
                     "answer": {
-                      "type": "short",
-                      "short": {
-                        "correct": "3"
-                      }
-                    }
+                      "options": {
+                        "correct": "B",
+                        "choice": [
+                          {
+                            "id": "A",
+                            "type": "text",
+                            "text": "x = 5",
+                            "_id": "6579cbd9316da3c91df094f0"
+                          },
+                          {
+                            "id": "B",
+                            "type": "text",
+                            "text": "x = 5",
+                            "_id": "6579cbd9316da3c91df094f1"
+                          },
+                          {
+                            "id": "C",
+                            "type": "text",
+                            "text": "x = 6",
+                            "_id": "6579cbd9316da3c91df094f2"
+                          },
+                          {
+                            "id": "D",
+                            "type": "text",
+                            "text": "x = 7",
+                            "_id": "6579cbd9316da3c91df094f3"
+                          }
+                        ]
+                      },
+                      "type": "options"
+                    },
+                    "_id": "6579cbd9316da3c91df094ef",
+                    "published": true,
+                    "createdAt": "2023-12-13T15:20:57.487Z",
+                    "updatedAt": "2023-12-13T15:20:57.487Z",
+                    "__v": 0
                   }
                 ]
               }
@@ -798,34 +869,60 @@
             "content": {
               "application/json": {
                 "example": {
-                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
-                  "published": true,
                   "source": {
-                    "name": "UUE",
-                    "value": "University Entrance Exam of Ethiopia(2012)",
-                    "year": 2012
+                    "name": "book",
+                    "value": "Example Source",
+                    "year": 2022
                   },
                   "details": {
-                    "target": "Grade 9",
-                    "grade": 9,
-                    "unit": 1,
+                    "target": "highschool",
+                    "grade": 10,
+                    "unit": 3,
                     "courses": "Mathematics",
                     "topic": "Algebra",
-                    "difficulty": "Easy"
+                    "difficulty": "medium"
                   },
                   "content": {
                     "type": "text",
-                    "text": "What is the value of x in the equation 2x + 3 = 9?",
-                    "image": "",
-                    "equation": "",
-                    "video": ""
+                    "text": "Solve for x: 2x + 5 = 15"
                   },
                   "answer": {
-                    "type": "short",
-                    "short": {
-                      "correct": "3"
-                    }
-                  }
+                    "options": {
+                      "correct": "B",
+                      "choice": [
+                        {
+                          "id": "A",
+                          "type": "text",
+                          "text": "x = 5",
+                          "_id": "6579cbd9316da3c91df094f0"
+                        },
+                        {
+                          "id": "B",
+                          "type": "text",
+                          "text": "x = 5",
+                          "_id": "6579cbd9316da3c91df094f1"
+                        },
+                        {
+                          "id": "C",
+                          "type": "text",
+                          "text": "x = 6",
+                          "_id": "6579cbd9316da3c91df094f2"
+                        },
+                        {
+                          "id": "D",
+                          "type": "text",
+                          "text": "x = 7",
+                          "_id": "6579cbd9316da3c91df094f3"
+                        }
+                      ]
+                    },
+                    "type": "options"
+                  },
+                  "_id": "6579cbd9316da3c91df094ef",
+                  "published": true,
+                  "createdAt": "2023-12-13T15:20:57.487Z",
+                  "updatedAt": "2023-12-13T15:20:57.487Z",
+                  "__v": 0
                 }
               }
             }
@@ -861,34 +958,60 @@
             "content": {
               "application/json": {
                 "example": {
-                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
-                  "published": true,
                   "source": {
-                    "name": "UUE",
-                    "value": "University Entrance Exam of Ethiopia(2012)",
-                    "year": 2012
+                    "name": "book",
+                    "value": "Example Source",
+                    "year": 2022
                   },
                   "details": {
-                    "target": "Grade 9",
-                    "grade": 9,
-                    "unit": 1,
+                    "target": "highschool",
+                    "grade": 10,
+                    "unit": 3,
                     "courses": "Mathematics",
                     "topic": "Algebra",
-                    "difficulty": "Easy"
+                    "difficulty": "medium"
                   },
                   "content": {
                     "type": "text",
-                    "text": "What is the value of x in the equation 2x + 3 = 9?",
-                    "image": "",
-                    "equation": "",
-                    "video": ""
+                    "text": "Solve for x: 2x + 5 = 15"
                   },
                   "answer": {
-                    "type": "short",
-                    "short": {
-                      "correct": "3"
-                    }
-                  }
+                    "options": {
+                      "correct": "B",
+                      "choice": [
+                        {
+                          "id": "A",
+                          "type": "text",
+                          "text": "x = 5",
+                          "_id": "6579cbd9316da3c91df094f0"
+                        },
+                        {
+                          "id": "B",
+                          "type": "text",
+                          "text": "x = 5",
+                          "_id": "6579cbd9316da3c91df094f1"
+                        },
+                        {
+                          "id": "C",
+                          "type": "text",
+                          "text": "x = 6",
+                          "_id": "6579cbd9316da3c91df094f2"
+                        },
+                        {
+                          "id": "D",
+                          "type": "text",
+                          "text": "x = 7",
+                          "_id": "6579cbd9316da3c91df094f3"
+                        }
+                      ]
+                    },
+                    "type": "options"
+                  },
+                  "_id": "6579cbd9316da3c91df094ef",
+                  "published": true,
+                  "createdAt": "2023-12-13T15:20:57.487Z",
+                  "updatedAt": "2023-12-13T15:20:57.487Z",
+                  "__v": 0
                 }
               }
             }
@@ -935,34 +1058,60 @@
             "content": {
               "application/json": {
                 "example": {
-                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
-                  "published": true,
                   "source": {
-                    "name": "UUE",
-                    "value": "University Entrance Exam of Ethiopia(2012)",
-                    "year": 2012
+                    "name": "book",
+                    "value": "Example Source",
+                    "year": 2022
                   },
                   "details": {
-                    "target": "Grade 9",
-                    "grade": 9,
-                    "unit": 1,
+                    "target": "highschool",
+                    "grade": 10,
+                    "unit": 3,
                     "courses": "Mathematics",
                     "topic": "Algebra",
-                    "difficulty": "Easy"
+                    "difficulty": "medium"
                   },
                   "content": {
                     "type": "text",
-                    "text": "What is the value of x in the equation 2x + 3 = 9?",
-                    "image": "",
-                    "equation": "",
-                    "video": ""
+                    "text": "Solve for x: 2x + 5 = 15"
                   },
                   "answer": {
-                    "type": "short",
-                    "short": {
-                      "correct": "3"
-                    }
-                  }
+                    "options": {
+                      "correct": "B",
+                      "choice": [
+                        {
+                          "id": "A",
+                          "type": "text",
+                          "text": "x = 5",
+                          "_id": "6579cbd9316da3c91df094f0"
+                        },
+                        {
+                          "id": "B",
+                          "type": "text",
+                          "text": "x = 5",
+                          "_id": "6579cbd9316da3c91df094f1"
+                        },
+                        {
+                          "id": "C",
+                          "type": "text",
+                          "text": "x = 6",
+                          "_id": "6579cbd9316da3c91df094f2"
+                        },
+                        {
+                          "id": "D",
+                          "type": "text",
+                          "text": "x = 7",
+                          "_id": "6579cbd9316da3c91df094f3"
+                        }
+                      ]
+                    },
+                    "type": "options"
+                  },
+                  "_id": "6579cbd9316da3c91df094ef",
+                  "published": true,
+                  "createdAt": "2023-12-13T15:20:57.487Z",
+                  "updatedAt": "2023-12-13T15:20:57.487Z",
+                  "__v": 0
                 }
               }
             }
@@ -1002,6 +1151,7 @@
                 "example": {
                   "_id": "5f7f5f5f5f5f5f5f5f5f5f5e",
                   "title": "Physics Contest Week 3",
+                  "image": "https://res.cloudinary.com/123.jpg",
                   "mode": "marathon",
                   "description": "Don't Miss It. Starts on Monday April 19, 2023 at 00:00:00LT",
                   "sponsor": "Sponsored by Birhanu Nega",
@@ -1047,28 +1197,28 @@
               "application/json": {
                 "example": [
                   {
-                    "_id": "5f7f5f5f5f5f5f5f5f5f5f5e",
-                    "title": "Physics Contest Week 3",
-                    "mode": "marathon",
-                    "description": "Don't Miss It. Starts on Monday April 19, 2023 at 00:00:00LT",
-                    "sponsor": "Sponsored by Birhanu Nega",
-
-                    "problems": [
+                    "_id": "6579dc738f9028d24b1c53a0",
+                    "title": "Science Quiz",
+                    "image": "https://res.cloudinary.com/123.jpg",
+                    "mode": "custom",
+                    "description": [
                       {
-                        "id": "5f7f5f5f5f5f5f5f5f5f5f5f"
+                        "type": "text",
+                        "text": "Test your knowledge in various scientific fields! Test your self",
+                        "_id": "6579df155aaebbbbd523ce07"
                       }
                     ],
-                    "startTime": "2023-12-06T15:16:10.583Z",
-                    "duration": "200",
-                    "participants": [
+                    "sponsor": [
                       {
-                        "id": "5f7f5f5f5f5f5f5f5f5f5f5c",
-                        "registeredAt": "2023-12-06T15:16:10.583Z"
+                        "type": "text",
+                        "text": "Sponsored by XYZ Corporation",
+                        "_id": "6579df155aaebbbbd523ce08"
                       }
                     ],
-                    "creator": {
-                      "id": "5f7f5f5f5f5f5f5f5f5f5f5c"
-                    }
+                    "startTime": "2023-02-15T15:30:00.000Z",
+                    "duration": 90,
+                    "creator": "6575603d3b4e4d629afcda7e",
+                    "__v": 21
                   }
                 ]
               }
@@ -1107,28 +1257,28 @@
             "content": {
               "application/json": {
                 "example": {
-                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5e",
-                  "title": "Physics Contest Week 3",
-                  "mode": "marathon",
-                  "description": "Don't Miss It. Starts on Monday April 19, 2023 at 00:00:00LT",
-                  "sponsor": "Sponsored by Birhanu Nega",
-
-                  "problems": [
+                  "_id": "6579deee5aaebbbbd523ce03",
+                  "title": "Science Quiz",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "mode": "custom",
+                  "description": [
                     {
-                      "id": "5f7f5f5f5f5f5f5f5f5f5f5f"
+                      "type": "text",
+                      "text": "Test your knowledge in various scientific fields!",
+                      "_id": "6579deee5aaebbbbd523ce04"
                     }
                   ],
-                  "startTime": "2023-12-06T15:16:10.583Z",
-                  "duration": "200",
-                  "participants": [
+                  "sponsor": [
                     {
-                      "id": "5f7f5f5f5f5f5f5f5f5f5f5c",
-                      "registeredAt": "2023-12-06T15:16:10.583Z"
+                      "type": "text",
+                      "text": "Sponsored by XYZ Corporation",
+                      "_id": "6579deee5aaebbbbd523ce05"
                     }
                   ],
-                  "creator": {
-                    "id": "5f7f5f5f5f5f5f5f5f5f5f5c"
-                  }
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "duration": 90,
+                  "creator": "6575603d3b4e4d629afcda7e",
+                  "__v": 0
                 }
               }
             }
@@ -1164,28 +1314,28 @@
             "content": {
               "application/json": {
                 "example": {
-                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5e",
-                  "title": "Physics Contest Week 3",
-                  "mode": "marathon",
-                  "description": "Don't Miss It. Starts on Monday April 19, 2023 at 00:00:00LT",
-                  "sponsor": "Sponsored by Birhanu Nega",
-
-                  "problems": [
+                  "_id": "6579deee5aaebbbbd523ce03",
+                  "title": "Science Quiz",
+                  "mode": "custom",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "description": [
                     {
-                      "id": "5f7f5f5f5f5f5f5f5f5f5f5f"
+                      "type": "text",
+                      "text": "Test your knowledge in various scientific fields!",
+                      "_id": "6579deee5aaebbbbd523ce04"
                     }
                   ],
-                  "startTime": "2023-12-06T15:16:10.583Z",
-                  "duration": "200",
-                  "participants": [
+                  "sponsor": [
                     {
-                      "id": "5f7f5f5f5f5f5f5f5f5f5f5c",
-                      "registeredAt": "2023-12-06T15:16:10.583Z"
+                      "type": "text",
+                      "text": "Sponsored by XYZ Corporation",
+                      "_id": "6579deee5aaebbbbd523ce05"
                     }
                   ],
-                  "creator": {
-                    "id": "5f7f5f5f5f5f5f5f5f5f5f5c"
-                  }
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "duration": 90,
+                  "creator": "6575603d3b4e4d629afcda7e",
+                  "__v": 0
                 }
               }
             }
@@ -1232,28 +1382,751 @@
             "content": {
               "application/json": {
                 "example": {
-                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5e",
-                  "title": "Physics Contest Week 3",
-                  "mode": "marathon",
-                  "description": "Don't Miss It. Starts on Monday April 19, 2023 at 00:00:00LT",
-                  "sponsor": "Sponsored by Birhanu Nega",
-
-                  "problems": [
+                  "_id": "6579deee5aaebbbbd523ce03",
+                  "title": "Science Quiz",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "mode": "custom",
+                  "description": [
                     {
-                      "id": "5f7f5f5f5f5f5f5f5f5f5f5f"
+                      "type": "text",
+                      "text": "Test your knowledge in various scientific fields!",
+                      "_id": "6579deee5aaebbbbd523ce04"
                     }
                   ],
-                  "startTime": "2023-12-06T15:16:10.583Z",
-                  "duration": "200",
+                  "sponsor": [
+                    {
+                      "type": "text",
+                      "text": "Sponsored by XYZ Corporation",
+                      "_id": "6579deee5aaebbbbd523ce05"
+                    }
+                  ],
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "duration": 90,
+                  "creator": "6575603d3b4e4d629afcda7e",
+                  "__v": 0
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/contests/{id}/problems/{problemId}/add": {
+      "get": {
+        "summary": "Add problem to contest",
+        "tags": ["Contests"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contest id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "problemId",
+            "in": "path",
+            "description": "Problem id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully add problem to contest",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "6579dc738f9028d24b1c53a0",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "title": "Science Quiz",
+                  "mode": "custom",
+                  "problems": ["6579d223f741c14bfaceaabd"],
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "duration": 90,
+                  "creator": "6575603d3b4e4d629afcda7e",
+                  "__v": 12
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/contests/{id}/problems/{problemId}/remove": {
+      "get": {
+        "summary": "Remove problem from contest",
+        "tags": ["Contests"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contest id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "problemId",
+            "in": "path",
+            "description": "Problem id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully remove problem to contest",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "6579dc738f9028d24b1c53a0",
+                  "title": "Science Quiz",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "mode": "custom",
+                  "problems": [],
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "duration": 90,
+                  "creator": "6575603d3b4e4d629afcda7e",
+                  "__v": 12
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/contests/{id}/participants/{participantId}/add": {
+      "get": {
+        "summary": "Add participant to contest",
+        "tags": ["Contests"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contest id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "participantId",
+            "in": "path",
+            "description": "Participant id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully add participant to contest",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "6579dc738f9028d24b1c53a0",
+                  "title": "Science Quiz",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "mode": "custom",
+                  "sponsor": [
+                    {
+                      "type": "text",
+                      "text": "Sponsored by XYZ Corporation",
+                      "_id": "6579df155aaebbbbd523ce08"
+                    }
+                  ],
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "duration": 90,
                   "participants": [
                     {
-                      "id": "5f7f5f5f5f5f5f5f5f5f5f5c",
-                      "registeredAt": "2023-12-06T15:16:10.583Z"
+                      "user": "6579d223f741c14bfaceaabd",
+                      "registeredAt": "2023-12-13T18:58:32.962Z",
+                      "points": 0,
+                      "submissions": [],
+                      "_id": "6579fed8bed04e8b0cfe0144"
                     }
                   ],
+                  "__v": 18
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/contests/{id}/participants/{participantId}/remove": {
+      "get": {
+        "summary": "Remove participant from contest",
+        "tags": ["Contests"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contest id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "participantId",
+            "in": "path",
+            "description": "participant id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully remove participant from contest",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "6579dc738f9028d24b1c53a0",
+                  "title": "Science Quiz",
+                  "mode": "custom",
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "duration": 90,
+                  "participants": [],
+                  "creator": "6575603d3b4e4d629afcda7e",
+                  "__v": 17
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/contests/{id}/problems": {
+      "get": {
+        "summary": "Get contest problems",
+        "tags": ["Contests"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contest id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "Skip number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of participants per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Field to sort by",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get contest problems",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "6579dc738f9028d24b1c53a0",
+                  "title": "Science Quiz",
+                  "mode": "custom",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "problems": [
+                    {
+                      "source": {
+                        "name": "book",
+                        "value": "Example Source",
+                        "year": 2022
+                      },
+                      "details": {
+                        "target": "highschool",
+                        "grade": 10,
+                        "unit": 3,
+                        "courses": "mathematics",
+                        "topic": "algebra",
+                        "difficulty": "medium"
+                      },
+                      "content": {
+                        "type": "text",
+                        "text": "Solve for x: 2x + 5 = 15"
+                      },
+                      "answer": {
+                        "options": {
+                          "correct": "B",
+                          "choice": [
+                            {
+                              "id": "A",
+                              "type": "text",
+                              "text": "x = 5",
+                              "_id": "6579d223f741c14bfaceaabe"
+                            },
+                            {
+                              "id": "B",
+                              "type": "text",
+                              "text": "x = 5",
+                              "_id": "6579d223f741c14bfaceaabf"
+                            },
+                            {
+                              "id": "C",
+                              "type": "text",
+                              "text": "x = 6",
+                              "_id": "6579d223f741c14bfaceaac0"
+                            },
+                            {
+                              "id": "D",
+                              "type": "text",
+                              "text": "x = 7",
+                              "_id": "6579d223f741c14bfaceaac1"
+                            }
+                          ]
+                        },
+                        "type": "options"
+                      },
+                      "_id": "6579d223f741c14bfaceaabd",
+                      "published": true,
+                      "createdAt": "2023-12-13T15:47:47.473Z",
+                      "updatedAt": "2023-12-13T15:47:47.473Z",
+                      "__v": 0
+                    }
+                  ],
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "duration": 90,
+                  "creator": "6575603d3b4e4d629afcda7e",
+                  "__v": 19
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/contests/{id}/participants": {
+      "get": {
+        "summary": "Get all contests participants",
+        "tags": ["Contests"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contest id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "Skip number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of participants per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Field to sort by",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get contest participants",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "6579dc738f9028d24b1c53a0",
+                  "title": "Science Quiz",
+                  "mode": "custom",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "duration": 90,
+                  "participants": [
+                    {
+                      "user": {
+                        "_id": "6575603d3b4e4d629afcda7e",
+                        "firstName": "kena",
+                        "lastName": "feyisa",
+                        "phone": "+251974244998",
+                        "email": "kena@gmail.com",
+                        "role": "MASTER",
+                        "verify": false,
+                        "dateOfBirth": "2023-12-10T00:00:00.000Z",
+                        "school": "Abenezer",
+                        "grade": "12",
+                        "points": 0
+                      },
+                      "registeredAt": "2023-12-14T04:53:21.612Z",
+                      "points": 0
+                    }
+                  ],
+                  "creator": "6575603d3b4e4d629afcda7e",
+                  "__v": 21
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/contests/{id}/creator": {
+      "get": {
+        "summary": "Get contest creator",
+        "tags": ["Contests"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contest id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get contest creator",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "6579dc738f9028d24b1c53a0",
+                  "title": "Science Quiz",
+                  "mode": "custom",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "duration": 90,
                   "creator": {
-                    "id": "5f7f5f5f5f5f5f5f5f5f5f5c"
-                  }
+                    "_id": "6575603d3b4e4d629afcda7e",
+                    "firstName": "kena",
+                    "lastName": "feyisa",
+                    "phone": "+251974244998",
+                    "email": "kena@gmail.com",
+                    "role": "MASTER",
+                    "verify": false,
+                    "dateOfBirth": "2023-12-10T00:00:00.000Z",
+                    "school": "Abenezer",
+                    "grade": "12",
+                    "points": 0,
+                    "createdAt": "2023-12-10T06:52:45.945Z",
+                    "__v": 0
+                  },
+                  "__v": 18
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/contests/{id}/info": {
+      "get": {
+        "summary": "Get contest creator",
+        "tags": ["Contests"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contest id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get contest info",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "6579dc738f9028d24b1c53a0",
+                  "title": "Science Quiz",
+                  "image": "https://res.cloudinary.com/123.jpg",
+                  "mode": "custom",
+                  "description": [
+                    {
+                      "type": "text",
+                      "text": "Test your knowledge in various scientific fields! Test your self",
+                      "_id": "6579df155aaebbbbd523ce07"
+                    }
+                  ],
+                  "sponsor": [
+                    {
+                      "type": "text",
+                      "text": "Sponsored by XYZ Corporation",
+                      "_id": "6579df155aaebbbbd523ce08"
+                    }
+                  ],
+                  "startTime": "2023-02-15T15:30:00.000Z",
+                  "duration": 90,
+                  "creator": {
+                    "_id": "6575603d3b4e4d629afcda7e",
+                    "firstName": "kena",
+                    "lastName": "feyisa",
+                    "phone": "+251974244998",
+                    "email": "kena@gmail.com",
+                    "role": "MASTER",
+                    "verify": false,
+                    "dateOfBirth": "2023-12-10T00:00:00.000Z",
+                    "school": "Abenezer",
+                    "grade": "12",
+                    "points": 0
+                  },
+                  "numberOfParticipants": 0,
+                  "numberOfProblems": 1
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/submission": {
+      "post": {
+        "summary": "add new submission",
+        "tags": ["Submissions"],
+        "requestBody": {
+          "description": "Submission data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Submission"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully created a new problem",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "content": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "problem": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "user": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "userAnswer": "23.4",
+                  "point": "23",
+                  "isCorrect": true,
+                  "attemptedAt": "2023-12-06T15:16:10.583Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/submission/{id}": {
+      "get": {
+        "summary": "Delete submission by id",
+        "tags": ["Submissions"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Submission id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created a new problem",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "content": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "problem": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "user": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "userAnswer": "23.4",
+                  "point": "23",
+                  "isCorrect": true,
+                  "attemptedAt": "2023-12-06T15:16:10.583Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete submission by id",
+        "tags": ["Submissions"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Submission id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully created a new problem",
+            "content": {
+              "application/json": {
+                "example": {
+                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "content": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "problem": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "user": "5f7f5f5f5f5f5f5f5f5f5f5f",
+                  "userAnswer": "23.4",
+                  "point": "23",
+                  "isCorrect": true,
+                  "attemptedAt": "2023-12-06T15:16:10.583Z"
                 }
               }
             }

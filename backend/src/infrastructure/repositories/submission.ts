@@ -26,32 +26,39 @@ export default function submissionRepositoryMongoDB() {
     }
 
     const submit = (submission: ReturnType<typeof Submission>) => {
-        return SubmissionModel.create({
-          contest: submission.getContest(),
-          problem: submission.getProblem(),
-          user: submission.getUser(),
-          userAnswer: submission.getUserAnswer(),
-          point: submission.getPoint(),
-          isCorrect: submission.getIsCorrect(),
-          attemptedAt: submission.getAttemptedAt(),
-        }).then((createdSubmission: ISubmission) => {
-          if (createdSubmission) {
-            return ContestModel.findByIdAndUpdate(
-              createdSubmission.contest,
-              {
-                $push: {
-                  submissions: createdSubmission._id,
-                },
-                $addToSet: {
-                  'participants.$.submissions': createdSubmission._id,
-                },
-              },
-              { new: true }
-            )
-          }
-          return createdSubmission;
-        });
-      };
+  return SubmissionModel.create({
+    contest: submission.getContest(),
+    problem: submission.getProblem(),
+    user: submission.getUser(),
+    userAnswer: submission.getUserAnswer(),
+    point: submission.getPoint(),
+    isCorrect: submission.getIsCorrect(),
+  }).then((createdSubmission: ISubmission) => {
+    if (createdSubmission && createdSubmission.contest) {
+      const userId = submission.getUser();
+      ContestModel.findOneAndUpdate(
+        {
+          _id: createdSubmission.contest,
+          'participants.user': userId,
+        },
+        {
+          $push: {
+            'participants.$.submissions': createdSubmission._id,
+          },
+          $inc: {
+            'participants.$.points': createdSubmission.point
+          },
+          $addToSet: {
+            submissions: createdSubmission._id,
+          },
+        },
+        { new: true }
+      );
+    }
+    return createdSubmission;
+  });
+};
+
       
 
     const deleteSubmission = (id: string) => {

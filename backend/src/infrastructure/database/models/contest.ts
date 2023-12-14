@@ -1,5 +1,5 @@
-import { IContest } from "../../../domain/entities/contest";
 import { Schema, model } from "mongoose";
+import { IContest } from "../../../domain/entities/contest";
 
 const CONTEST_MODE_OPTIONS: string[] = ["marathon", "killAndPass", "custom"];
 const TYPE_OPTIONS: string[] = ['text', 'image', 'video'];
@@ -7,13 +7,14 @@ const TYPE_OPTIONS: string[] = ['text', 'image', 'video'];
 const contestSchema = new Schema<IContest>({
   title: { type: String, required: true },
   mode: { type: String, enum: CONTEST_MODE_OPTIONS, required: true },
+  image: { type: String },
   description: [
     {
       type: { type: String, enum: TYPE_OPTIONS, required: true },
       text: { type: String },
       image: { type: String },
       video: { type: String },
-    }
+    },
   ],
   sponsor: [
     {
@@ -21,7 +22,7 @@ const contestSchema = new Schema<IContest>({
       text: { type: String },
       image: { type: String },
       video: { type: String },
-    }
+    },
   ],
   problems: [
     {
@@ -33,25 +34,31 @@ const contestSchema = new Schema<IContest>({
   duration: { type: Number, required: true },
   participants: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      registeredAt: { type: Date, required: true, default: Date.now },
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+        unique: true,
+      },
+      registeredAt: { type: Date, default: Date.now, required: true },
+      points: { type: Number, default: 0 },
       submissions: [
         {
           type: Schema.Types.ObjectId,
           ref: 'Submission',
-        }
+          unique: true,
+        },
       ],
     },
   ],
   creator: {
     type: Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
   },
 });
 
-contestSchema.index({ title: 1, mode: 1 });
-contestSchema.index({ 'participants.registeredAt': 1 });
+contestSchema.index({ 'participants.user': 1, 'problems': 1, 'participants.submissions': 1 }, { unique: true });
 
 const ContestModel = model<IContest>("Contest", contestSchema);
 

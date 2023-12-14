@@ -12,7 +12,7 @@ export default function validateProblem(problem: any) {
       target: Joi.string().valid('elementary', 'university', 'highschool', 'general').required(),
       grade: Joi.number(),
       unit: Joi.number(),
-      courses: Joi.string().required(),
+      courses: Joi.string().valid('mathematics', 'biology', 'physics', 'chemistry', 'history', 'geography', 'civics', 'economics', 'amharic', 'english', 'civics', 'computer', 'general').required(),
       topic: Joi.string().required(),
       difficulty: Joi.string().valid('normal', 'easy', 'medium', 'hard').required(),
     }).required(),
@@ -30,6 +30,7 @@ export default function validateProblem(problem: any) {
         choice: Joi.array().items(
           Joi.object({
             id: Joi.string(),
+            type: Joi.string().valid('text', 'image', 'equation', 'video'),
             text: Joi.string(),
             image: Joi.string(),
             equation: Joi.string(),
