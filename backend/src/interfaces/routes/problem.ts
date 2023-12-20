@@ -6,13 +6,41 @@ import authMiddleware from '../middlewares/authMiddleware'
 import authorization from '../middlewares/authorizationMiddleware'
 
 export default function problemRouter(router: Router) {
-  const controller = ProblemController(problemDbRepository, problemRepositoryMongoDB);
+  const controller = ProblemController(
+    problemDbRepository,
+    problemRepositoryMongoDB,
+  )
 
-  router.post('/', authMiddleware, authorization(['ADMIN', 'MASTER']), controller.createNewProblem);
-  router.get('/', authMiddleware, authorization(['ADMIN', 'MASTER', 'USER']), controller.fetchAllProblems);
-  router.get('/:id', authMiddleware, authorization(['ADMIN', 'MASTER', 'USER']), controller.fetchProblemById);
-  router.delete('/:id', authMiddleware, authorization(['ADMIN', 'MASTER']), controller.deleteProblem);
-  router.put('/:id', authMiddleware, authorization(['ADMIN', 'MASTER']), controller.updateExistingProblem);
+  router.post(
+    '/',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER']),
+    controller.createNewProblem,
+  )
+  router.get(
+    '/',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.fetchAllProblems,
+  )
+  router.get(
+    '/:id',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.fetchProblemById,
+  )
+  router.delete(
+    '/:id',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER']),
+    controller.deleteProblem,
+  )
+  router.put(
+    '/:id',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER']),
+    controller.updateExistingProblem,
+  )
 
-  return router;
+  return router
 }

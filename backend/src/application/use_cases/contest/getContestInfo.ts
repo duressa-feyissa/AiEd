@@ -1,8 +1,8 @@
-import contestDbRepository from "../../../infrastructure/repositories/contest";
+import contestDbRepository from '../../../infrastructure/repositories/contest'
 
 export default function getContestInfo(
   id: string,
-  contestRepository: ReturnType<typeof contestDbRepository>
+  contestRepository: ReturnType<typeof contestDbRepository>,
 ) {
-  return contestRepository.findContestInfo(id);
+  return contestRepository.findContestInfo(id)
 }

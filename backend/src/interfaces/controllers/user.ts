@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { IAuthServiceInterface } from "../../application/service/auth"
+import { IAuthServiceInterface } from '../../application/service/auth'
 import createUser from '../../application/use_cases/user/create'
 import removeUser from '../../application/use_cases/user/delete'
 import findByEmail from '../../application/use_cases/user/findByEmail'
@@ -9,28 +9,28 @@ import findByUsername from '../../application/use_cases/user/findByUsername'
 import findByUsernameOrEmail from '../../application/use_cases/user/findByUsernameOrEmail'
 import viewAllUsers from '../../application/use_cases/user/views'
 import { IUserRepository } from '../../domain/repositories/user'
-import { IAuthService } from "../services/auth"
+import { IAuthService } from '../services/auth'
 import { IUserRepositoryImpl } from './../../infrastructure/repositories/user'
 
 export default function UserController(
   userRepository: IUserRepository,
   userDbRepositoryImpl: IUserRepositoryImpl,
   authService: IAuthService,
-  authServiceInterface: IAuthServiceInterface
+  authServiceInterface: IAuthServiceInterface,
 ) {
   const dbRepository = userRepository(userDbRepositoryImpl())
 
-  const auth = authServiceInterface(authService());
+  const auth = authServiceInterface(authService())
   const fetchUserById = (req: Request, res: Response, next: NextFunction) => {
     findById(req.params.id, dbRepository)
-      .then((user) => res.json(user))
-      .catch((error) => next(error))
+      .then(user => res.json(user))
+      .catch(error => next(error))
   }
 
   const fetchAllUsers = (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): void => {
     const { skip = '0', limit = '10', search, sort } = req.query
 
@@ -42,12 +42,12 @@ export default function UserController(
     }
 
     viewAllUsers(options, dbRepository)
-      .then((users) => res.json(users))
-      .catch((error) => next(error))
+      .then(users => res.json(users))
+      .catch(error => next(error))
   }
 
   const parseSortParameter = (
-    sort: string | undefined
+    sort: string | undefined,
   ): Record<string, 1 | -1> => {
     if (sort) {
       const [field, order] = sort.split(':')
@@ -61,54 +61,54 @@ export default function UserController(
 
   const deleteUser = (req: Request, res: Response, next: NextFunction) => {
     removeUser(req.params.id, dbRepository)
-      .then((user) => res.json(user))
-      .catch((error) => next(error))
+      .then(user => res.json(user))
+      .catch(error => next(error))
   }
 
   const fetchUserByUsername = (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     findByUsername(req.params.username, dbRepository)
-      .then((user) => res.json(user))
-      .catch((error) => next(error))
+      .then(user => res.json(user))
+      .catch(error => next(error))
   }
 
   const fetchUserByEmail = (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     findByEmail(req.params.email, dbRepository)
-      .then((user) => res.json(user))
-      .catch((error) => next(error))
+      .then(user => res.json(user))
+      .catch(error => next(error))
   }
 
   const fetchUserByPhone = (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     findByPhone(req.params.phone, dbRepository)
-      .then((user) => res.json(user))
-      .catch((error) => next(error))
+      .then(user => res.json(user))
+      .catch(error => next(error))
   }
 
   const fetchUserByPhoneOrEmail = (
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ) => {
     findByUsernameOrEmail(req.params.userOrEmail, dbRepository)
-      .then((user) => res.json(user))
-      .catch((error) => next(error))
+      .then(user => res.json(user))
+      .catch(error => next(error))
   }
 
   const createNewUser = (req: Request, res: Response, next: NextFunction) => {
     createUser(req.body, dbRepository, auth)
-      .then((user) => res.json(user))
-      .catch((error) => next(error))
+      .then(user => res.json(user))
+      .catch(error => next(error))
   }
 
   return {

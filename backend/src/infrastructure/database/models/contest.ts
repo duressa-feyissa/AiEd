@@ -1,8 +1,9 @@
-import { Schema, model } from "mongoose";
-import { IContest } from "../../../domain/entities/contest";
+import { Schema, model } from 'mongoose'
+import { IContest } from '../../../domain/entities/contest'
 
-const CONTEST_MODE_OPTIONS: string[] = ["marathon", "killAndPass", "custom"];
-const TYPE_OPTIONS: string[] = ['text', 'image', 'video'];
+const CONTEST_MODE_OPTIONS: string[] = ['marathon', 'killAndPass', 'custom']
+const TYPE_OPTIONS: string[] = ['text', 'image', 'video']
+const SUBMITTED_ON_OPTIONS: string[] = ['live', 'virtual']
 
 const contestSchema = new Schema<IContest>({
   title: { type: String, required: true },
@@ -37,16 +38,19 @@ const contestSchema = new Schema<IContest>({
       user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        required: true,
+        index: true,
       },
-      registeredAt: { type: Date, default: Date.now, required: true },
-      points: { type: Number, default: 0 },
-      submissions: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: 'Submission',
-          unique: true,
-        },
-      ],
+      isRegistered: { type: Boolean, default: false },
+      startAt: { type: Date },
+      registeredAt: { type: Date },
+      type: { type: String, enum: SUBMITTED_ON_OPTIONS, required: true },
+    },
+  ],
+  submissions: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Submission',
     },
   ],
   creator: {
@@ -54,10 +58,10 @@ const contestSchema = new Schema<IContest>({
     ref: 'User',
     required: true,
   },
-});
+})
 
-contestSchema.index({ 'participants.user': 1, 'problems': 1, 'participants.submissions': 1 }, { unique: true });
+contestSchema.index({ title: 1, mode: 1 }, { unique: true })
 
-const ContestModel = model<IContest>("Contest", contestSchema);
+const ContestModel = model<IContest>('Contest', contestSchema)
 
-export default ContestModel;
+export default ContestModel

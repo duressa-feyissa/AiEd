@@ -1,8 +1,8 @@
-import problemDbRepository from "../../../infrastructure/repositories/problem";
+import problemDbRepository from '../../../infrastructure/repositories/problem'
 
 export default function findById(
-    id: string,
-    problemRepository: ReturnType<typeof problemDbRepository>
+  id: string,
+  problemRepository: ReturnType<typeof problemDbRepository>,
 ) {
-    return problemRepository.findById(id)
+  return problemRepository.findById(id)
 }

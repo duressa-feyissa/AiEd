@@ -1,12 +1,38 @@
-import { Schema, model } from 'mongoose';
-import { IProblem } from '../../../domain/entities/problem';
+import { Schema, model } from 'mongoose'
+import { IProblem } from '../../../domain/entities/problem'
 
-const SOURCE_OPTIONS: string[] = ['gpt-4', 'gpt-3', 'model', 'uue', 'book', 'extreme'];
-const DIFFICULTY_OPTIONS: string[] = ['normal', 'easy', 'medium', 'hard'];
-const TARGET_OPTIONS: string[] = ['elementary', 'university', 'highschool', 'general'];
-const TYPE_OPTIONS: string[] = ['text', 'image', 'equation', 'video'];
-const ANSWER_TYPE_OPTIONS: string[] = ['options', 'short', 'trueFalse'];
-const COURSES_OPTIONS: string[] = ['mathematics', 'biology', 'physics', 'chemistry', 'history', 'geography', 'civics', 'economics', 'amharic', 'english', 'civics', 'computer', 'general'];
+const SOURCE_OPTIONS: string[] = [
+  'gpt-4',
+  'gpt-3',
+  'model',
+  'uue',
+  'book',
+  'extreme',
+]
+const DIFFICULTY_OPTIONS: string[] = ['normal', 'easy', 'medium', 'hard']
+const TARGET_OPTIONS: string[] = [
+  'elementary',
+  'university',
+  'highschool',
+  'general',
+]
+const TYPE_OPTIONS: string[] = ['text', 'image', 'equation', 'video']
+const ANSWER_TYPE_OPTIONS: string[] = ['options', 'short', 'trueFalse']
+const COURSES_OPTIONS: string[] = [
+  'mathematics',
+  'biology',
+  'physics',
+  'chemistry',
+  'history',
+  'geography',
+  'civics',
+  'economics',
+  'amharic',
+  'english',
+  'civics',
+  'computer',
+  'general',
+]
 
 const problemSchema = new Schema<IProblem>({
   published: { type: Boolean, default: false },
@@ -30,18 +56,24 @@ const problemSchema = new Schema<IProblem>({
     equation: { type: String },
     video: { type: String },
   },
+  point: {
+    correct: { type: Number, default: 1, required: true },
+    wrong: { type: Number, default: 0, required: true },
+  },
   answer: {
     type: { type: String, enum: ANSWER_TYPE_OPTIONS, required: true },
     options: {
       correct: { type: String },
-      choice: [{
-        id: { type: String },
-        type: { type: String, enum: TYPE_OPTIONS },
-        text: { type: String },
-        image: { type: String },
-        equation: { type: String },
-        video: { type: String },
-      }],
+      choice: [
+        {
+          id: { type: String },
+          type: { type: String, enum: TYPE_OPTIONS },
+          text: { type: String },
+          image: { type: String },
+          equation: { type: String },
+          video: { type: String },
+        },
+      ],
     },
     short: {
       correct: { type: String },
@@ -52,11 +84,11 @@ const problemSchema = new Schema<IProblem>({
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-});
+})
 
-problemSchema.index({ 'details.target': 1 });
-problemSchema.index({ 'details.difficulty': 1 });
+problemSchema.index({ 'details.target': 1 })
+problemSchema.index({ 'details.difficulty': 1 })
 
-const ProblemModel = model<IProblem>('Problem', problemSchema);
+const ProblemModel = model<IProblem>('Problem', problemSchema)
 
-export default ProblemModel;
+export default ProblemModel

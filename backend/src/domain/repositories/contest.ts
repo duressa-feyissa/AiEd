@@ -1,75 +1,107 @@
-import contestRepositoryMongoDB from "../../infrastructure/repositories/contest"
-import Contest, { IContest } from "../entities/contest"
+import contestRepositoryMongoDB from '../../infrastructure/repositories/contest'
+import Contest, { IContest, IContestRegistration } from '../entities/contest'
 
 interface ViewAllContestParams {
-    skip: number
-    limit: number
-    search?: string
-    sort?: Record<string, 1 | -1>
-  }
-
-export type IContestRepository = (
-    repository: ReturnType<typeof contestRepositoryMongoDB>
-) => {
-    findById: (id: string) => Promise<IContest>
-    viewAllContest: (params: ViewAllContestParams) => Promise<IContest[]>
-    findContestInfo: (id: string) => Promise<IContest>;
-    deleteContest: (id: string) => Promise<IContest>
-    updateContest: (id: string, contest: ReturnType<typeof Contest>) => Promise<IContest>
-    createContest: (contest: ReturnType<typeof Contest>) => Promise<IContest>
-    addProblem: (id: string, problemId: string) => Promise<IContest>;
-    removeProblem: (id: string, problemId: string) => Promise<IContest>;
-    addParticipant: (id: string, userId: string) => Promise<IContest>;
-    removeParticipant: (id: string, userId: string) => Promise<IContest>;
-    getParticipants: (id: string, query: any) => Promise<IContest>;
-    getProblems: (id: string, query:any) => Promise<IContest>;
-    getCreator: (id: string) => Promise<IContest>;
-    
+  skip: number
+  limit: number
+  search?: string
+  sort?: Record<string, 1 | -1>
 }
 
-export default function contestDbRepository(repository: ReturnType<typeof contestRepositoryMongoDB>) {
+export type IContestRepository = (
+  repository: ReturnType<typeof contestRepositoryMongoDB>,
+) => {
+  findById: (id: string) => Promise<IContest>
+  viewAllContest: (params: ViewAllContestParams) => Promise<IContest[]>
+  findContestInfo: (id: string) => Promise<IContest>
+  deleteContest: (id: string) => Promise<IContest>
+  updateContest: (
+    id: string,
+    contest: ReturnType<typeof Contest>,
+  ) => Promise<IContest>
+  createContest: (contest: ReturnType<typeof Contest>) => Promise<IContest>
+  addProblem: (id: string, problemId: string) => Promise<IContest>
+  removeProblem: (id: string, problemId: string) => Promise<IContest>
+  getProblems: (id: string, query: any) => Promise<IContest>
+  getCreator: (id: string) => Promise<IContest>
+  registerParticipantForContest: (
+    contestId: string,
+    userId: string,
+    data: IContestRegistration,
+  ) => Promise<any>
+  getContestStanding: (
+    contestId: string,
+    skip: number,
+    limit: number,
+    second: number,
+  ) => Promise<any>
+  getContestSubmissions: (
+    contestId: string,
+    participantId: string,
+  ) => Promise<any>
+}
 
-    const findById = (id: string): Promise<IContest> =>
-        repository.findById(id)
-    
-    const viewAllContest = (params: ViewAllContestParams) =>
+export default function contestDbRepository(
+  repository: ReturnType<typeof contestRepositoryMongoDB>,
+) {
+  const findById = (id: string): Promise<IContest> => repository.findById(id)
+
+  const viewAllContest = (params: ViewAllContestParams) =>
     repository.viewAllContest(params)
 
-    const deleteContest = (id: string) => repository.deleteContest(id)
+  const deleteContest = (id: string) => repository.deleteContest(id)
 
-    const updateContest = (id: string, contest: ReturnType<typeof Contest>) => repository.updateContest(id, contest)
+  const updateContest = (id: string, contest: ReturnType<typeof Contest>) =>
+    repository.updateContest(id, contest)
 
-    const createContest = (contest: ReturnType<typeof Contest>) => repository.createContest(contest)
+  const createContest = (contest: ReturnType<typeof Contest>) =>
+    repository.createContest(contest)
 
-    const addProblem = (id: string, problemId: string) => repository.addProblem(id, problemId)
+  const addProblem = (id: string, problemId: string) =>
+    repository.addProblem(id, problemId)
 
-    const removeProblem = (id: string, problemId: string) => repository.removeProblem(id, problemId)
+  const removeProblem = (id: string, problemId: string) =>
+    repository.removeProblem(id, problemId)
 
-    const addParticipant = (id: string, userId: string) => repository.addParticipant(id, userId)
+  const getProblems = (id: string, query: any) =>
+    repository.getProblems(id, query)
 
-    const removeParticipant = (id: string, userId: string) => repository.removeParticipant(id, userId)
+  const getCreator = (id: string) => repository.getCreator(id)
 
-    const getParticipants = (id: string, query: any) => repository.getParticipants(id, query)
+  const findContestInfo = (id: string) => repository.findContestInfo(id)
 
-    const getProblems = (id: string, query: any) => repository.getProblems(id, query)
+  const registerParticipantForContest = (
+    contestId: string,
+    userId: string,
+    data: IContestRegistration,
+  ) => repository.registerParticipantForContest(contestId, userId, data)
 
-    const getCreator = (id: string) => repository.getCreator(id)
+  const getContestStanding = (
+    contestId: string,
+    skip: number,
+    limit: number,
+    second: number,
+  ) => repository.getContestStanding(contestId, skip, limit, second)
 
-    const findContestInfo = (id: string) => repository.findContestInfo(id)
+  const getContestSubmissions = (
+    contestId: string,
+    participantId: string,
+  ) =>
+    repository.getContestSubmissions(contestId,  participantId)
 
-    return {
-        findById,
-        viewAllContest,
-        deleteContest,
-        updateContest,
-        createContest,
-        addProblem,
-        removeProblem,
-        addParticipant,
-        removeParticipant,
-        getParticipants,
-        getProblems,
-        getCreator,
-        findContestInfo
-    }
+  return {
+    findById,
+    viewAllContest,
+    deleteContest,
+    updateContest,
+    createContest,
+    addProblem,
+    removeProblem,
+    getProblems,
+    getCreator,
+    findContestInfo,
+    registerParticipantForContest,
+    getContestStanding,
+    getContestSubmissions,
+  }
 }

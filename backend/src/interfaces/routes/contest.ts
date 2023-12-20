@@ -1,95 +1,96 @@
-import { Router } from "express";
-import contestDbRepository from "../../domain/repositories/contest";
-import contestRepositoryMongoDB from "../../infrastructure/repositories/contest";
-import ContestController from "../controllers/contest";
-import authMiddleware from "../middlewares/authMiddleware";
-import authorization from "../middlewares/authorizationMiddleware";
+import { Router } from 'express'
+import contestDbRepository from '../../domain/repositories/contest'
+import contestRepositoryMongoDB from '../../infrastructure/repositories/contest'
+import ContestController from '../controllers/contest'
+import authMiddleware from '../middlewares/authMiddleware'
+import authorization from '../middlewares/authorizationMiddleware'
 
 export default function contestRouter(router: Router) {
   const controller = ContestController(
     contestDbRepository,
-    contestRepositoryMongoDB
-  );
+    contestRepositoryMongoDB,
+  )
 
   router.post(
-    "/",
+    '/',
     authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.createNewContest
-  );
+    authorization(['ADMIN', 'MASTER']),
+    controller.createNewContest,
+  )
   router.get(
-    "/",
+    '/',
     authMiddleware,
-    authorization(["ADMIN", "MASTER", "USER"]),
-    controller.fetchAllContests
-  );
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.fetchAllContests,
+  )
   router.get(
-    "/:id",
+    '/:id',
     authMiddleware,
-    authorization(["ADMIN", "MASTER", "USER"]),
-    controller.fetchContestById
-  );
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.fetchContestById,
+  )
   router.delete(
-    "/:id",
+    '/:id',
     authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.deleteContest
-  );
+    authorization(['ADMIN', 'MASTER']),
+    controller.deleteContest,
+  )
   router.put(
-    "/:id",
+    '/:id',
     authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.updateExistingContest
-  );
+    authorization(['ADMIN', 'MASTER']),
+    controller.updateExistingContest,
+  )
   router.get(
-    "/:id/problems/:problemId/add",
+    '/:id/standing',
     authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.addProblem
-  );
-  router.get(
-    "/:id/problems/:problemId/remove",
-    authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.removeProblem
-  );
-  router.get(
-    "/:id/participants/:participantId/add",
-    authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.addParticipant
-  );
-  router.get(
-    "/:id/participants/:participantId/remove",
-    authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.removeParticipant
-  );
-  router.get(
-    "/:id/problems",
-    authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.fetchProblems
-  );
-  router.get(
-    "/:id/participants",
-    authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.fetchParticipants
-  );
-  router.get(
-    "/:id/creator",
-    authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.fetchCreator
-  );
-  router.get(
-    "/:id/info",
-    authMiddleware,
-    authorization(["ADMIN", "MASTER"]),
-    controller.findContestInfo
-  );
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.fetchContestStanding,
+  )
 
+  router.get(
+    '/:id/problems/:problemId/add',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.addProblem,
+  )
+  router.get(
+    '/:id/problems/:problemId/remove',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.removeProblem,
+  )
+  router.get(
+    '/:id/problems',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.fetchProblems,
+  )
 
-  return router;
+  router.get(
+    '/:id/creator',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.fetchCreator,
+  )
+  router.get(
+    '/:id/info',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.findContestInfo,
+  )
+  router.post(
+    '/:id/register/:userId/',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.registerForContest,
+  )
+  router.get(
+    '/:id/submissions/:participantId',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.fetchContestSubmissions,
+  )
+
+  return router
 }

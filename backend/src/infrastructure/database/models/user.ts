@@ -75,5 +75,3 @@ UserSchema.index({ role: 1 })
 const UserModel = mongoose.model<IUser>('User', UserSchema)
 
 export default UserModel
-
-

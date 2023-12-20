@@ -1,4 +1,4 @@
-import * as Joi from 'joi';
+import * as Joi from 'joi'
 
 export default function validateContest(contest: any) {
   const schema = Joi.object({
@@ -11,7 +11,7 @@ export default function validateContest(contest: any) {
         text: Joi.string(),
         image: Joi.string(),
         video: Joi.string(),
-      })
+      }),
     ),
     sponsor: Joi.array().items(
       Joi.object({
@@ -19,12 +19,12 @@ export default function validateContest(contest: any) {
         text: Joi.string(),
         image: Joi.string(),
         video: Joi.string(),
-      })
+      }),
     ),
     problems: Joi.array().items(
       Joi.object({
         id: Joi.string().required(),
-      })
+      }),
     ),
     startTime: Joi.date().required(),
     duration: Joi.number().required(),
@@ -33,12 +33,12 @@ export default function validateContest(contest: any) {
         user: Joi.string().required(),
         registeredAt: Joi.date().required(),
         submissions: Joi.array().items(Joi.string().required()),
-      })
+      }),
     ),
     creator: Joi.object({
       _id: Joi.string().required(),
     }),
-  });
+  })
 
-  return schema.validate(contest);
+  return schema.validate(contest)
 }

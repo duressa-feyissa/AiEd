@@ -1,8 +1,8 @@
-import contestDbRepository from "../../../infrastructure/repositories/contest";
+import contestDbRepository from '../../../infrastructure/repositories/contest'
 
 export default function removeContest(
   id: string,
-  contestRepository: ReturnType<typeof contestDbRepository>
+  contestRepository: ReturnType<typeof contestDbRepository>,
 ) {
-  return contestRepository.deleteContest(id);
+  return contestRepository.deleteContest(id)
 }

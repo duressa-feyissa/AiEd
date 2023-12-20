@@ -1,8 +1,8 @@
-import submissionDbRepository from "../../../domain/repositories/submission";
+import submissionDbRepository from '../../../domain/repositories/submission'
 
 export default function removeSubmission(
   id: string,
-  submissionRepository: ReturnType<typeof submissionDbRepository>
+  submissionRepository: ReturnType<typeof submissionDbRepository>,
 ) {
-  return submissionRepository.deleteSubmission(id);
+  return submissionRepository.deleteSubmission(id)
 }
