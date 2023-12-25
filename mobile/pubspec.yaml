@@ -1,0 +1,37 @@
+name: mobile
+description: A new Flutter project.
+
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.1.5 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  flutter_svg: ^2.0.9
+  vector_math: ^2.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  assets:
+    - assets/images/onBoarding/1.png
+    - assets/images/onBoarding/1_1.png
+    - assets/images/onBoarding/2.png
+    - assets/images/onBoarding/2_2.png
+    - assets/images/onBoarding/3.png
+    - assets/images/onBoarding/3_3.png
+    - assets/images/onBoarding/4.png
+    - assets/images/onBoarding/4_4.png
+    - assets/images/onBoarding/5.png
+    - assets/images/onBoarding/5_5.png
+  uses-material-design: true

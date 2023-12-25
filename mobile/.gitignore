@@ -1,6 +1,15 @@
 ### Flutter ###
 # Flutter/Dart/Pub related
 **/doc/api/
+/build/
+/android/
+/ios/
+/linux/
+/macos/
+/web/
+/windows/
+/.dart_tool/
+/.idea/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
@@ -11,6 +20,13 @@
 build/
 coverage/
 lib/generated_plugin_registrant.dart
+test/.generated/
+test/coverage/
+/build/
+.dart_tool/
+.flutter-plugins
+.idea/
+
 # For library packages, don’t commit the pubspec.lock file.
 # Regenerating the pubspec.lock file lets you test your package against the latest compatible versions of its dependencies.
 # See https://dart.dev/guides/libraries/private-files#pubspeclock
@@ -63,3 +79,5 @@ lib/generated_plugin_registrant.dart
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 # End
+
+
