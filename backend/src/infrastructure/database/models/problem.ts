@@ -43,8 +43,8 @@ const problemSchema = new Schema<IProblem>({
   },
   details: {
     target: { type: String, enum: TARGET_OPTIONS, required: true },
-    grade: { type: Number },
-    unit: { type: Number },
+    grade: { type: String },
+    unit: { type: String },
     courses: { type: String, enum: COURSES_OPTIONS, required: true },
     topic: { type: String },
     difficulty: { type: String, enum: DIFFICULTY_OPTIONS },

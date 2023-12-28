@@ -33,8 +33,8 @@ const COURSES_OPTIONS: string[] = [
   'general',
 ]
 
-export function validateProblem (problem: any) {
-  const  schema = Joi.object({
+export function validateProblem(problem: any) {
+  const schema = Joi.object({
     published: Joi.boolean().required(),
     source: Joi.object({
       name: Joi.string()
@@ -47,8 +47,8 @@ export function validateProblem (problem: any) {
       target: Joi.string()
         .valid(...TARGET_OPTIONS)
         .required(),
-      grade: Joi.number(),
-      unit: Joi.number(),
+      grade: Joi.string(),
+      unit: Joi.string(),
       courses: Joi.string()
         .valid(...COURSES_OPTIONS)
         .required(),
@@ -109,4 +109,4 @@ export function validateProblem (problem: any) {
   return schema.validate(problem)
 }
 
-export default  validateProblem
+export default validateProblem

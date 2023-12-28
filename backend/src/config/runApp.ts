@@ -27,7 +27,7 @@ export default async function (app: Express) {
   routes(app)
   app.use(errorHandlingMiddleware)
   return new Promise<Server>((resolve, reject) => {
-    const PORT = 3001
+    const PORT = process.env.PORT || 3000
     const connection = app
       .listen(PORT)
       .on('listening', () => {

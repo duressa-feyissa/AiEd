@@ -29,8 +29,8 @@ export interface IProblem {
   }
   details: {
     target: (typeof target)[number]
-    grade?: number
-    unit?: number
+    grade?: string
+    unit?: string
     courses: (typeof courses)[number]
     topic?: string
     difficulty?: (typeof difficulty)[number]
