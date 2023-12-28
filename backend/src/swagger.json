@@ -77,9 +77,11 @@
         },
         "required": ["email", "role"]
       },
+
       "Problem": {
         "type": "object",
         "properties": {
+          "_id": { "type": "string" },
           "published": { "type": "boolean" },
           "source": {
             "type": "object",
@@ -88,14 +90,7 @@
               "value": { "type": "string" },
               "year": { "type": "number" }
             },
-            "required": ["name", "value"]
-          },
-          "point": {
-            "type": "object",
-            "properties": {
-              "correct": { "type": "number" },
-              "wrong": { "type": "number" }
-            }
+            "required": ["name"]
           },
           "details": {
             "type": "object",
@@ -107,63 +102,84 @@
               "topic": { "type": "string" },
               "difficulty": { "type": "string" }
             },
-            "required": ["target", "courses", "topic", "difficulty"]
+            "required": ["target", "courses"]
           },
-          "content": {
+          "question": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": { "type": "string" },
+                "value": { "type": "string" }
+              },
+              "required": ["type", "value"]
+            }
+          },
+          "point": {
             "type": "object",
             "properties": {
-              "type": { "type": "string" },
-              "text": { "type": "string" },
-              "image": { "type": "string" },
-              "equation": { "type": "string" },
-              "video": { "type": "string" }
-            },
-            "required": []
+              "correct": { "type": "number" },
+              "wrong": { "type": "number" }
+            }
           },
           "answer": {
             "type": "object",
             "properties": {
-              "type": { "type": "string" },
+              "type": { "type": "string", "required": true },
               "options": {
                 "type": "object",
                 "properties": {
-                  "correct": { "type": "string" },
                   "choice": {
                     "type": "array",
                     "items": {
                       "type": "object",
                       "properties": {
-                        "id": { "type": "string" },
-                        "text": { "type": "string" },
-                        "image": { "type": "string" },
-                        "equation": { "type": "string" },
-                        "video": { "type": "string" }
-                      }
+                        "correct": { "type": "boolean" },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": { "type": "string" },
+                              "value": { "type": "string" }
+                            },
+                            "required": ["type", "value"]
+                          }
+                        }
+                      },
+                      "required": ["correct", "data"]
                     }
                   }
                 }
               },
-              "short": {
-                "type": "object",
-                "properties": {
-                  "correct": { "type": "string" }
-                }
-              },
-              "trueFalse": {
-                "type": "object",
-                "properties": {
-                  "correct": { "type": "string" }
+              "short": { "type": "string" },
+              "trueFalse": { "type": "boolean" },
+              "explanation": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": { "type": "string" },
+                    "value": { "type": "string" }
+                  },
+                  "required": ["type", "value"]
                 }
               }
             },
-            "anyOf": [
-              { "required": ["options"] },
-              { "required": ["short"] },
-              { "required": ["trueFalse"] }
-            ]
-          }
+            "required": ["type"]
+          },
+          "essayId": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
         },
-        "required": ["published", "source", "details", "content", "answer"]
+        "required": [
+          "published",
+          "source",
+          "details",
+          "question",
+          "point",
+          "answer"
+        ]
       },
       "Contest": {
         "type": "object",
@@ -742,34 +758,77 @@
             "content": {
               "application/json": {
                 "example": {
-                  "_id": "5f7f5f5f5f5f5f5f5f5f5f5f",
                   "published": true,
                   "source": {
-                    "name": "UUE",
-                    "value": "University Entrance Exam of Ethiopia(2012)",
-                    "year": 2012
+                    "name": "gpt-4",
+                    "value": "source value",
+                    "year": 2023
                   },
                   "details": {
-                    "target": "Grade 9",
-                    "grade": 9,
-                    "unit": 1,
-                    "courses": "Mathematics",
-                    "topic": "Algebra",
-                    "difficulty": "Easy"
+                    "target": "university",
+                    "grade": 2,
+                    "unit": 3,
+                    "courses": "mathematics",
+                    "topic": "Geometry",
+                    "difficulty": "medium"
                   },
-                  "content": {
-                    "type": "text",
-                    "text": "What is the value of x in the equation 2x + 3 = 9?",
-                    "image": "",
-                    "equation": "",
-                    "video": ""
+                  "question": [
+                    {
+                      "type": "text",
+                      "value": "Find the area of a triangle with base 8 units and height 12 units."
+                    }
+                  ],
+                  "point": {
+                    "correct": 5,
+                    "wrong": 1
                   },
                   "answer": {
-                    "type": "short",
-                    "short": {
-                      "correct": "3"
-                    }
-                  }
+                    "type": "options",
+                    "options": {
+                      "choice": [
+                        {
+                          "correct": true,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "48 square units"
+                            }
+                          ]
+                        },
+                        {
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "24 square units"
+                            }
+                          ]
+                        },
+                        {
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "36 square units"
+                            }
+                          ]
+                        },
+                        {
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "60 square units"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "explanation": []
+                  },
+                  "_id": "658dc9bd9364dada68926cd3",
+                  "createdAt": "2023-12-28T19:17:17.689Z",
+                  "updatedAt": "2023-12-28T19:17:17.689Z"
                 }
               }
             }
@@ -910,65 +969,77 @@
               "application/json": {
                 "example": [
                   {
+                    "published": true,
                     "source": {
-                      "name": "book",
-                      "value": "Example Source",
-                      "year": 2022
+                      "name": "gpt-4",
+                      "value": "source value",
+                      "year": 2023
                     },
                     "details": {
-                      "target": "highschool",
-                      "grade": 10,
+                      "target": "university",
+                      "grade": 2,
                       "unit": 3,
-                      "courses": "Mathematics",
-                      "topic": "Algebra",
+                      "courses": "mathematics",
+                      "topic": "Geometry",
                       "difficulty": "medium"
                     },
-
-                    "content": {
-                      "type": "text",
-                      "text": "Solve for x: 2x + 5 = 15"
-                    },
+                    "question": [
+                      {
+                        "type": "text",
+                        "value": "Find the area of a triangle with base 8 units and height 12 units."
+                      }
+                    ],
                     "point": {
-                      "correct": 1,
-                      "wrong": 0
+                      "correct": 5,
+                      "wrong": 1
                     },
                     "answer": {
+                      "type": "options",
                       "options": {
-                        "correct": "B",
                         "choice": [
                           {
-                            "id": "A",
-                            "type": "text",
-                            "text": "x = 5",
-                            "_id": "6579cbd9316da3c91df094f0"
+                            "correct": true,
+                            "data": [
+                              {
+                                "type": "text",
+                                "value": "48 square units"
+                              }
+                            ]
                           },
                           {
-                            "id": "B",
-                            "type": "text",
-                            "text": "x = 5",
-                            "_id": "6579cbd9316da3c91df094f1"
+                            "correct": false,
+                            "data": [
+                              {
+                                "type": "text",
+                                "value": "24 square units"
+                              }
+                            ]
                           },
                           {
-                            "id": "C",
-                            "type": "text",
-                            "text": "x = 6",
-                            "_id": "6579cbd9316da3c91df094f2"
+                            "correct": false,
+                            "data": [
+                              {
+                                "type": "text",
+                                "value": "36 square units"
+                              }
+                            ]
                           },
                           {
-                            "id": "D",
-                            "type": "text",
-                            "text": "x = 7",
-                            "_id": "6579cbd9316da3c91df094f3"
+                            "correct": false,
+                            "data": [
+                              {
+                                "type": "text",
+                                "value": "60 square units"
+                              }
+                            ]
                           }
                         ]
                       },
-                      "type": "options"
+                      "explanation": []
                     },
-                    "_id": "6579cbd9316da3c91df094ef",
-                    "published": true,
-                    "createdAt": "2023-12-13T15:20:57.487Z",
-                    "updatedAt": "2023-12-13T15:20:57.487Z",
-                    "__v": 0
+                    "_id": "658dc9bd9364dada68926cd3",
+                    "createdAt": "2023-12-28T19:17:17.689Z",
+                    "updatedAt": "2023-12-28T19:17:17.689Z"
                   }
                 ]
               }
@@ -1007,64 +1078,77 @@
             "content": {
               "application/json": {
                 "example": {
+                  "published": true,
                   "source": {
-                    "name": "book",
-                    "value": "Example Source",
-                    "year": 2022
+                    "name": "gpt-4",
+                    "value": "source value",
+                    "year": 2023
                   },
                   "details": {
-                    "target": "highschool",
-                    "grade": 10,
+                    "target": "university",
+                    "grade": 2,
                     "unit": 3,
-                    "courses": "Mathematics",
-                    "topic": "Algebra",
+                    "courses": "mathematics",
+                    "topic": "Geometry",
                     "difficulty": "medium"
                   },
+                  "question": [
+                    {
+                      "type": "text",
+                      "value": "Find the area of a triangle with base 8 units and height 12 units."
+                    }
+                  ],
                   "point": {
-                    "correct": 1,
-                    "wrong": 0
-                  },
-                  "content": {
-                    "type": "text",
-                    "text": "Solve for x: 2x + 5 = 15"
+                    "correct": 5,
+                    "wrong": 1
                   },
                   "answer": {
+                    "type": "options",
                     "options": {
-                      "correct": "B",
                       "choice": [
                         {
-                          "id": "A",
-                          "type": "text",
-                          "text": "x = 5",
-                          "_id": "6579cbd9316da3c91df094f0"
+                          "correct": true,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "48 square units"
+                            }
+                          ]
                         },
                         {
-                          "id": "B",
-                          "type": "text",
-                          "text": "x = 5",
-                          "_id": "6579cbd9316da3c91df094f1"
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "24 square units"
+                            }
+                          ]
                         },
                         {
-                          "id": "C",
-                          "type": "text",
-                          "text": "x = 6",
-                          "_id": "6579cbd9316da3c91df094f2"
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "36 square units"
+                            }
+                          ]
                         },
                         {
-                          "id": "D",
-                          "type": "text",
-                          "text": "x = 7",
-                          "_id": "6579cbd9316da3c91df094f3"
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "60 square units"
+                            }
+                          ]
                         }
                       ]
                     },
-                    "type": "options"
+                    "explanation": []
                   },
-                  "_id": "6579cbd9316da3c91df094ef",
-                  "published": true,
-                  "createdAt": "2023-12-13T15:20:57.487Z",
-                  "updatedAt": "2023-12-13T15:20:57.487Z",
-                  "__v": 0
+                  "_id": "658dc9bd9364dada68926cd3",
+                  "createdAt": "2023-12-28T19:17:17.689Z",
+                  "updatedAt": "2023-12-28T19:17:17.689Z"
                 }
               }
             }
@@ -1100,64 +1184,77 @@
             "content": {
               "application/json": {
                 "example": {
+                  "published": true,
                   "source": {
-                    "name": "book",
-                    "value": "Example Source",
-                    "year": 2022
+                    "name": "gpt-4",
+                    "value": "source value",
+                    "year": 2023
                   },
                   "details": {
-                    "target": "highschool",
-                    "grade": 10,
+                    "target": "university",
+                    "grade": 2,
                     "unit": 3,
-                    "courses": "Mathematics",
-                    "topic": "Algebra",
+                    "courses": "mathematics",
+                    "topic": "Geometry",
                     "difficulty": "medium"
                   },
+                  "question": [
+                    {
+                      "type": "text",
+                      "value": "Find the area of a triangle with base 8 units and height 12 units."
+                    }
+                  ],
                   "point": {
-                    "correct": 1,
-                    "wrong": 0
-                  },
-                  "content": {
-                    "type": "text",
-                    "text": "Solve for x: 2x + 5 = 15"
+                    "correct": 5,
+                    "wrong": 1
                   },
                   "answer": {
+                    "type": "options",
                     "options": {
-                      "correct": "B",
                       "choice": [
                         {
-                          "id": "A",
-                          "type": "text",
-                          "text": "x = 5",
-                          "_id": "6579cbd9316da3c91df094f0"
+                          "correct": true,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "48 square units"
+                            }
+                          ]
                         },
                         {
-                          "id": "B",
-                          "type": "text",
-                          "text": "x = 5",
-                          "_id": "6579cbd9316da3c91df094f1"
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "24 square units"
+                            }
+                          ]
                         },
                         {
-                          "id": "C",
-                          "type": "text",
-                          "text": "x = 6",
-                          "_id": "6579cbd9316da3c91df094f2"
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "36 square units"
+                            }
+                          ]
                         },
                         {
-                          "id": "D",
-                          "type": "text",
-                          "text": "x = 7",
-                          "_id": "6579cbd9316da3c91df094f3"
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "60 square units"
+                            }
+                          ]
                         }
                       ]
                     },
-                    "type": "options"
+                    "explanation": []
                   },
-                  "_id": "6579cbd9316da3c91df094ef",
-                  "published": true,
-                  "createdAt": "2023-12-13T15:20:57.487Z",
-                  "updatedAt": "2023-12-13T15:20:57.487Z",
-                  "__v": 0
+                  "_id": "658dc9bd9364dada68926cd3",
+                  "createdAt": "2023-12-28T19:17:17.689Z",
+                  "updatedAt": "2023-12-28T19:17:17.689Z"
                 }
               }
             }
@@ -1204,64 +1301,77 @@
             "content": {
               "application/json": {
                 "example": {
+                  "published": true,
                   "source": {
-                    "name": "book",
-                    "value": "Example Source",
-                    "year": 2022
+                    "name": "gpt-4",
+                    "value": "source value",
+                    "year": 2023
                   },
                   "details": {
-                    "target": "highschool",
-                    "grade": 10,
+                    "target": "university",
+                    "grade": 2,
                     "unit": 3,
-                    "courses": "Mathematics",
-                    "topic": "Algebra",
+                    "courses": "mathematics",
+                    "topic": "Geometry",
                     "difficulty": "medium"
                   },
+                  "question": [
+                    {
+                      "type": "text",
+                      "value": "Find the area of a triangle with base 8 units and height 12 units."
+                    }
+                  ],
                   "point": {
-                    "correct": 1,
-                    "wrong": 0
-                  },
-                  "content": {
-                    "type": "text",
-                    "text": "Solve for x: 2x + 5 = 15"
+                    "correct": 5,
+                    "wrong": 1
                   },
                   "answer": {
+                    "type": "options",
                     "options": {
-                      "correct": "B",
                       "choice": [
                         {
-                          "id": "A",
-                          "type": "text",
-                          "text": "x = 5",
-                          "_id": "6579cbd9316da3c91df094f0"
+                          "correct": true,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "48 square units"
+                            }
+                          ]
                         },
                         {
-                          "id": "B",
-                          "type": "text",
-                          "text": "x = 5",
-                          "_id": "6579cbd9316da3c91df094f1"
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "24 square units"
+                            }
+                          ]
                         },
                         {
-                          "id": "C",
-                          "type": "text",
-                          "text": "x = 6",
-                          "_id": "6579cbd9316da3c91df094f2"
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "36 square units"
+                            }
+                          ]
                         },
                         {
-                          "id": "D",
-                          "type": "text",
-                          "text": "x = 7",
-                          "_id": "6579cbd9316da3c91df094f3"
+                          "correct": false,
+                          "data": [
+                            {
+                              "type": "text",
+                              "value": "60 square units"
+                            }
+                          ]
                         }
                       ]
                     },
-                    "type": "options"
+                    "explanation": []
                   },
-                  "_id": "6579cbd9316da3c91df094ef",
-                  "published": true,
-                  "createdAt": "2023-12-13T15:20:57.487Z",
-                  "updatedAt": "2023-12-13T15:20:57.487Z",
-                  "__v": 0
+                  "_id": "658dc9bd9364dada68926cd3",
+                  "createdAt": "2023-12-28T19:17:17.689Z",
+                  "updatedAt": "2023-12-28T19:17:17.689Z"
                 }
               }
             }

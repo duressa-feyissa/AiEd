@@ -1,7 +1,7 @@
 const source: string[] = ['gpt-4', 'gpt-3', 'model', 'uue', 'book', 'extreme']
 const difficulty: string[] = ['normal', 'easy', 'medium', 'hard']
 const target: string[] = ['elementary', 'university', 'highschool', 'general']
-const type: string[] = ['text', 'image', 'equation', 'video']
+const content: string[] = ['text', 'image', 'equation', 'video']
 const answerType: string[] = ['options', 'short', 'trueFalse']
 const courses: string[] = [
   'mathematics',
@@ -24,7 +24,7 @@ export interface IProblem {
   published: boolean
   source: {
     name: (typeof source)[number]
-    value: string
+    value?: string
     year?: number
   }
   details: {
@@ -32,16 +32,13 @@ export interface IProblem {
     grade?: number
     unit?: number
     courses: (typeof courses)[number]
-    topic: string
-    difficulty: (typeof difficulty)[number]
+    topic?: string
+    difficulty?: (typeof difficulty)[number]
   }
-  content: {
-    type: (typeof type)[number]
-    text?: string
-    image?: string
-    equation?: string
-    video?: string
-  }
+  question: {
+    type: (typeof content)[number]
+    value: string
+  }[]
   point: {
     correct: number
     wrong: number
@@ -49,23 +46,22 @@ export interface IProblem {
   answer: {
     type: (typeof answerType)[number]
     options?: {
-      correct: string
       choice: {
-        id: string
-        type: (typeof type)[number]
-        text?: string
-        image?: string
-        equation?: string
-        video?: string
+        correct: boolean
+        data: {
+          type: (typeof content)[number]
+          value: string
+        }[]
       }[]
     }
-    short?: {
-      correct: string
-    }
-    trueFalse?: {
-      correct: string
-    }
+    short?: string
+    trueFalse?: boolean
+    explanation?: {
+      type: (typeof content)[number]
+      value: string
+    }[]
   }
+  essay?: string
   createdAt?: Date
   updatedAt?: Date
 }
@@ -76,8 +72,9 @@ export default function Problem({
   source,
   point,
   details,
-  content,
+  question,
   answer,
+  essay,
   createdAt,
   updatedAt,
 }: IProblem) {
@@ -87,8 +84,9 @@ export default function Problem({
     getPoint: () => point,
     getSource: () => source,
     getDetails: () => details,
-    getContent: () => content,
+    getQuestion: () => question,
     getAnswer: () => answer,
+    getEsssay: () => essay,
     getCreatedAt: () => createdAt,
     getUpdatedAt: () => updatedAt,
   })

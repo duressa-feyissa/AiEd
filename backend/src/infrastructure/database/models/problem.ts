@@ -16,7 +16,7 @@ const TARGET_OPTIONS: string[] = [
   'highschool',
   'general',
 ]
-const TYPE_OPTIONS: string[] = ['text', 'image', 'equation', 'video']
+const CONTENT_OPTIONS = ['text', 'image', 'equation', 'video']
 const ANSWER_TYPE_OPTIONS: string[] = ['options', 'short', 'trueFalse']
 const COURSES_OPTIONS: string[] = [
   'mathematics',
@@ -38,7 +38,7 @@ const problemSchema = new Schema<IProblem>({
   published: { type: Boolean, default: false },
   source: {
     name: { type: String, enum: SOURCE_OPTIONS, required: true },
-    value: { type: String, required: true },
+    value: { type: String },
     year: { type: Number },
   },
   details: {
@@ -46,16 +46,15 @@ const problemSchema = new Schema<IProblem>({
     grade: { type: Number },
     unit: { type: Number },
     courses: { type: String, enum: COURSES_OPTIONS, required: true },
-    topic: { type: String, required: true },
-    difficulty: { type: String, enum: DIFFICULTY_OPTIONS, required: true },
+    topic: { type: String },
+    difficulty: { type: String, enum: DIFFICULTY_OPTIONS },
   },
-  content: {
-    type: { type: String, enum: TYPE_OPTIONS, required: true },
-    text: { type: String },
-    image: { type: String },
-    equation: { type: String },
-    video: { type: String },
-  },
+  question: [
+    {
+      type: { type: String, enum: CONTENT_OPTIONS, required: true },
+      value: { type: String, required: true },
+    },
+  ],
   point: {
     correct: { type: Number, default: 1, required: true },
     wrong: { type: Number, default: 0, required: true },
@@ -63,31 +62,34 @@ const problemSchema = new Schema<IProblem>({
   answer: {
     type: { type: String, enum: ANSWER_TYPE_OPTIONS, required: true },
     options: {
-      correct: { type: String },
       choice: [
         {
-          id: { type: String },
-          type: { type: String, enum: TYPE_OPTIONS },
-          text: { type: String },
-          image: { type: String },
-          equation: { type: String },
-          video: { type: String },
+          correct: { type: Boolean, required: true, default: false },
+          data: [
+            {
+              type: { type: String, enum: CONTENT_OPTIONS, required: true },
+              value: { type: String, required: true },
+            },
+          ],
         },
       ],
     },
-    short: {
-      correct: { type: String },
-    },
-    trueFalse: {
-      correct: { type: String },
-    },
+    short: { type: String },
+    trueFalse: { type: Boolean },
+    explanation: [
+      {
+        type: { type: String, enum: CONTENT_OPTIONS },
+        value: { type: String },
+      },
+    ],
+  },
+  essay: {
+    type: Schema.Types.ObjectId,
+    ref: 'Essay',
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 })
-
-problemSchema.index({ 'details.target': 1 })
-problemSchema.index({ 'details.difficulty': 1 })
 
 const ProblemModel = model<IProblem>('Problem', problemSchema)
 

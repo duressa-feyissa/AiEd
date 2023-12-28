@@ -100,7 +100,8 @@ export default function problemRepositoryMongoDB() {
       source: problem.getSource(),
       point: problem.getPoint(),
       details: problem.getDetails(),
-      content: problem.getContent(),
+      question: problem.getQuestion(),
+      essayId: problem.getEsssay(),
       answer: problem.getAnswer(),
     }).then((problem: IProblem) => problem)
   }
@@ -131,9 +132,10 @@ export default function problemRepositoryMongoDB() {
         _id: id,
         published: problem.getPublished(),
         source: problem.getSource(),
-        details: problem.getDetails(),
         point: problem.getPoint(),
-        content: problem.getContent(),
+        details: problem.getDetails(),
+        question: problem.getQuestion(),
+        essayId: problem.getEsssay(),
         answer: problem.getAnswer(),
       },
       { new: true },

@@ -95,55 +95,55 @@ export default function submissionRepositoryMongoDB() {
       }
     }
 
-    let point = 0
-    let isCorrect = false
-    if (existingProblem.answer.type === 'options') {
-      if (
-        existingProblem.answer.options &&
-        existingProblem.answer.options.correct === submission.getUserAnswer()
-      ) {
-        point = existingProblem.point.correct
-        isCorrect = true
-      } else {
-        point = existingProblem.point.wrong
-      }
-    } else if (existingProblem.answer.type === 'short') {
-      if (
-        existingProblem.answer.short &&
-        existingProblem.answer.short.correct === submission.getUserAnswer()
-      ) {
-        point = existingProblem.point.correct
-        isCorrect = true
-      } else {
-        point = existingProblem.point.wrong
-      }
-    } else if (existingProblem.answer.type === 'trueFalse') {
-      if (
-        existingProblem.answer.trueFalse &&
-        existingProblem.answer.trueFalse.correct === submission.getUserAnswer()
-      ) {
-        point = existingProblem.point.correct
-        isCorrect = true
-      } else {
-        point = existingProblem.point.wrong
-      }
-    }
+    // let point = 0
+    // let isCorrect = false
+    // if (existingProblem.answer.type === 'options') {
+    //   if (
+    //     existingProblem.answer.options &&
+    //     existingProblem.answer.options.correct === submission.getUserAnswer()
+    //   ) {
+    //     point = existingProblem.point.correct
+    //     isCorrect = true
+    //   } else {
+    //     point = existingProblem.point.wrong
+    //   }
+    // } else if (existingProblem.answer.type === 'short') {
+    //   if (
+    //     existingProblem.answer.short &&
+    //     existingProblem.answer.short.correct === submission.getUserAnswer()
+    //   ) {
+    //     point = existingProblem.point.correct
+    //     isCorrect = true
+    //   } else {
+    //     point = existingProblem.point.wrong
+    //   }
+    // } else if (existingProblem.answer.type === 'trueFalse') {
+    //   if (
+    //     existingProblem.answer.trueFalse &&
+    //     existingProblem.answer.trueFalse === submission.getUserAnswer()
+    //   ) {
+    //     point = existingProblem.point.correct
+    //     isCorrect = true
+    //   } else {
+    //     point = existingProblem.point.wrong
+    //   }
+    // }
 
-    if (participationId) {
-      const submission = await SubmissionModel.findOne({
-        contest: contestId,
-        participation: participationId,
-        problem: problemId,
-      })
-      if (submission) {
-        return Promise.reject(
-          new CustomError(
-            `You have already submitted this problem in this contest`,
-            400,
-          ),
-        )
-      }
-    }
+    // if (participationId) {
+    //   const submission = await SubmissionModel.findOne({
+    //     contest: contestId,
+    //     participation: participationId,
+    //     problem: problemId,
+    //   })
+    //   if (submission) {
+    //     return Promise.reject(
+    //       new CustomError(
+    //         `You have already submitted this problem in this contest`,
+    //         400,
+    //       ),
+    //     )
+    //   }
+    // }
 
     return SubmissionModel.create({
       problem: problemId,
@@ -152,8 +152,8 @@ export default function submissionRepositoryMongoDB() {
       participation: participationId,
       second: second,
       userAnswer: submission.getUserAnswer(),
-      point: point,
-      isCorrect: isCorrect,
+      point: 1,
+      isCorrect: 1,
       attemptedAt: submission.getAttemptedAt() || new Date(),
     }).then((submission: ISubmission) => {
       ContestModel.findByIdAndUpdate(
