@@ -126,8 +126,9 @@ class ProblemLocalDataSourceImpl implements ProblemLocalDataSource {
     final result = await db.rawQuery(sql.toString(), args);
 
     if (result.isNotEmpty) {
-      return result.map((e) => ProblemModel.fromJson(e)).toList();
+      return result.map((e) => ProblemModel.fromDbJson(e)).toList();
     } else {
+      print(result);
       throw CacheException();
     }
   }

@@ -40,7 +40,10 @@ class DatabaseHelper {
       dateOfBirth TEXT,
       createAt TEXT,
       updateAt TEXT
-    ),
+    );
+  ''');
+
+    await db.execute('''
     CREATE TABLE IF NOT EXISTS problem (
       id TEXT PRIMARY KEY,
       source TEXT,
@@ -52,12 +55,14 @@ class DatabaseHelper {
       difficulty TEXT,
       topic TEXT,
       grade TEXT,
-      points INTEGER,
+      unit TEXT,
       question TEXT,
       answer TEXT,
+      correctPoint INTEGER,
+      wrongPoint INTEGER,
       createAt TEXT,
       updateAt TEXT
-    ),
+    );
   ''');
   }
 }

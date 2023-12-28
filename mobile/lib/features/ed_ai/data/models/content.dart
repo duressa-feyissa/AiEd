@@ -8,14 +8,12 @@ class ContentModel extends Content {
   }) : super(
           type: type,
           value: value,
-          id: id,
         );
 
   factory ContentModel.fromJson(Map<String, dynamic> json) {
     return ContentModel(
       type: json['type'],
       value: json['value'],
-      id: json['id'],
     );
   }
 
@@ -24,7 +22,6 @@ class ContentModel extends Content {
     return {
       'type': type,
       'value': value,
-      'id': id,
     };
   }
 }

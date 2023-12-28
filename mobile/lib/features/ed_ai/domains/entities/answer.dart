@@ -1,9 +1,42 @@
 import 'package:equatable/equatable.dart';
 import 'package:mobile/features/ed_ai/domains/entities/content.dart';
 
+class Option extends Equatable {
+  final bool correct;
+  final List<Content> data;
+
+  const Option({
+    required this.correct,
+    required this.data,
+  });
+
+  @override
+  List<Object?> get props => [
+        correct,
+        data,
+      ];
+
+  Option copyWith({
+    bool? correct,
+    List<Content>? data,
+  }) {
+    return Option(
+      correct: correct ?? this.correct,
+      data: data ?? this.data,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'correct': correct,
+      'data': data.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
 class Answer extends Equatable {
   final String type;
-  final List<List<Content>>? option;
+  final List<Option>? option;
   final String? short;
   final bool? trueFalse;
   final List<Content>? explanation;
@@ -27,7 +60,7 @@ class Answer extends Equatable {
 
   Answer copyWith({
     String? type,
-    List<List<Content>>? option,
+    List<Option>? option,
     String? short,
     bool? trueFalse,
     List<Content>? explanation,
@@ -44,7 +77,7 @@ class Answer extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'type': type,
-      'option': option?.map((e) => e.map((e) => e.toJson()).toList()).toList(),
+      'option': option?.map((e) => e.toJson()).toList(),
       'short': short,
       'trueFalse': trueFalse,
       'explanation': explanation?.map((e) => e.toJson()).toList(),

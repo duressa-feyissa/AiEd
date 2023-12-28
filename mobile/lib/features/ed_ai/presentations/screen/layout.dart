@@ -2,9 +2,8 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/ed_ai/presentations/bloc/scroll/scroll_bloc.dart';
-
+import 'package:mobile/features/ed_ai/presentations/screen/Guide/home.dart';
 import 'package:mobile/features/ed_ai/presentations/screen/contest/home.dart';
-import 'package:mobile/features/ed_ai/presentations/screen/contest/info.dart';
 import 'package:mobile/features/ed_ai/presentations/screen/home/home.dart';
 import 'package:mobile/features/ed_ai/presentations/screen/problem/home.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -90,7 +89,7 @@ class _LayoutState extends State<Layout> {
       const Home(),
       const ContestHome(),
       const ProblemHome(),
-      const ContestInfo(),
+      const GuideHome(),
       Container(
         color: const Color.fromARGB(255, 237, 246, 250).withOpacity(0.6),
         child: Switch(

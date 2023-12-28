@@ -5,44 +5,54 @@ import 'package:mobile/features/ed_ai/domains/entities/content.dart';
 class Problem extends Equatable {
   final String id;
   final String source;
-  final String? value;
-  final int? year;
-  final String target;
-  final String courses;
-  final String difficulty;
-  final String? topic;
-  final String? grade;
-  final int points;
+  final int correctPoint;
+  final int wrongPoint;
   final List<Content> question;
   final Answer answer;
+  final String target;
+  final String courses;
+  final String? difficulty;
+  final String? topic;
+  final String? grade;
+  final String? unit;
+  final String? essayId;
+  final String? value;
+
+  final int? year;
 
   const Problem({
     required this.id,
     required this.source,
-    required this.target,
-    required this.courses,
-    required this.difficulty,
-    required this.topic,
-    required this.grade,
-    required this.points,
+    required this.correctPoint,
+    required this.wrongPoint,
     required this.question,
     required this.answer,
-    required this.value,
-    required this.year,
+    required this.target,
+    required this.courses,
+    this.difficulty,
+    this.topic,
+    this.grade,
+    this.unit,
+    this.essayId,
+    this.value,
+    this.year,
   });
 
   @override
   List<Object?> get props => [
         id,
         source,
+        correctPoint,
+        wrongPoint,
+        question,
+        answer,
         target,
         courses,
         difficulty,
         topic,
         grade,
-        points,
-        question,
-        answer,
+        unit,
+        essayId,
         value,
         year,
       ];
@@ -50,28 +60,34 @@ class Problem extends Equatable {
   Problem copyWith({
     String? id,
     String? source,
+    int? correctPoint,
+    int? wrongPoint,
+    List<Content>? question,
+    Answer? answer,
     String? target,
     String? courses,
     String? difficulty,
     String? topic,
     String? grade,
-    int? points,
-    List<Content>? question,
-    Answer? answer,
+    String? unit,
+    String? essayId,
     String? value,
     int? year,
   }) {
     return Problem(
       id: id ?? this.id,
       source: source ?? this.source,
+      correctPoint: correctPoint ?? this.correctPoint,
+      wrongPoint: wrongPoint ?? this.wrongPoint,
+      question: question ?? this.question,
+      answer: answer ?? this.answer,
       target: target ?? this.target,
       courses: courses ?? this.courses,
       difficulty: difficulty ?? this.difficulty,
       topic: topic ?? this.topic,
       grade: grade ?? this.grade,
-      points: points ?? this.points,
-      question: question ?? this.question,
-      answer: answer ?? this.answer,
+      unit: unit ?? this.unit,
+      essayId: essayId ?? this.essayId,
       value: value ?? this.value,
       year: year ?? this.year,
     );
@@ -81,14 +97,17 @@ class Problem extends Equatable {
     return {
       'id': id,
       'source': source,
+      'correctPoint': correctPoint,
+      'wrongPoint': wrongPoint,
+      'question': question.map((e) => e.toJson()).toList(),
+      'answer': answer.toJson(),
       'target': target,
       'courses': courses,
       'difficulty': difficulty,
       'topic': topic,
       'grade': grade,
-      'points': points,
-      'question': question.map((e) => e.toJson()).toList(),
-      'answer': answer.toJson(),
+      'unit': unit,
+      'essayId': essayId,
       'value': value,
       'year': year,
     };
