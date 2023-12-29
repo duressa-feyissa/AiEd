@@ -11,6 +11,13 @@ export default function problemRouter(router: Router) {
     problemRepositoryMongoDB,
   )
 
+  router.get(
+    '/sync',
+    authMiddleware,
+    authorization(['ADMIN', 'MASTER', 'USER']),
+    controller.fetchProblemSync,
+  )
+
   router.post(
     '/',
     authMiddleware,

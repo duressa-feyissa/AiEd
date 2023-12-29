@@ -737,6 +737,124 @@
         }
       }
     },
+    "/api/v1/problems/sync": {
+      "get": {
+        "summary": "Sync problems",
+        "tags": ["Problems"],
+        "parameters": [
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "Skip number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of participants per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "last",
+            "in": "query",
+            "description": "Last time update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully get all problems",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "source": {
+                      "name": "book",
+                      "value": "Example Source",
+                      "year": 2022
+                    },
+                    "details": {
+                      "target": "highschool",
+                      "grade": 10,
+                      "unit": 3,
+                      "courses": "Mathematics",
+                      "topic": "Algebra",
+                      "difficulty": "medium"
+                    },
+
+                    "content": {
+                      "type": "text",
+                      "text": "Solve for x: 2x + 5 = 15"
+                    },
+                    "point": {
+                      "correct": 1,
+                      "wrong": 0
+                    },
+                    "answer": {
+                      "options": {
+                        "correct": "B",
+                        "choice": [
+                          {
+                            "id": "A",
+                            "type": "text",
+                            "text": "x = 5",
+                            "_id": "6579cbd9316da3c91df094f0"
+                          },
+                          {
+                            "id": "B",
+                            "type": "text",
+                            "text": "x = 5",
+                            "_id": "6579cbd9316da3c91df094f1"
+                          },
+                          {
+                            "id": "C",
+                            "type": "text",
+                            "text": "x = 6",
+                            "_id": "6579cbd9316da3c91df094f2"
+                          },
+                          {
+                            "id": "D",
+                            "type": "text",
+                            "text": "x = 7",
+                            "_id": "6579cbd9316da3c91df094f3"
+                          }
+                        ]
+                      },
+                      "type": "options"
+                    },
+                    "_id": "6579cbd9316da3c91df094ef",
+                    "published": true,
+                    "createdAt": "2023-12-13T15:20:57.487Z",
+                    "updatedAt": "2023-12-13T15:20:57.487Z",
+                    "__v": 0
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/problems": {
       "post": {
         "summary": "Create a new problem",
