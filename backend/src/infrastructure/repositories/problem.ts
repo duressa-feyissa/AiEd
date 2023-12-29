@@ -26,6 +26,7 @@ export type IProblemRepositoryImpl = () => {
     problem: ReturnType<typeof Problem>,
   ) => Promise<IProblem>
   createProblem: (problem: ReturnType<typeof Problem>) => Promise<IProblem>
+  syncProblem: (last: Date, skip: number, limit: number) => Promise<IProblem[]>
 }
 
 export default function problemRepositoryMongoDB() {
@@ -41,6 +42,20 @@ export default function problemRepositoryMongoDB() {
       }
       return problem
     })
+  }
+
+  const syncProblem = (
+    last: Date,
+    skip: number,
+    limit: number,
+  ): Promise<IProblem[]> => {
+    return ProblemModel.find({
+      updatedAt: { $gte: last },
+    })
+      .sort({ updatedAt: 1 })
+      .skip(skip)
+      .limit(limit)
+      .then((problems: IProblem[]) => problems)
   }
 
   const viewAllProblem = (params: ViewAllProblemParams) => {
@@ -153,5 +168,6 @@ export default function problemRepositoryMongoDB() {
     createProblem,
     deleteProblem,
     updateProblem,
+    syncProblem,
   }
 }

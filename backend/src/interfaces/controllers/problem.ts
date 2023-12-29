@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import createProblem from '../../application/use_cases/problem/create'
 import removeProblem from '../../application/use_cases/problem/delete'
 import findById from '../../application/use_cases/problem/findById'
+import syncProblem from '../../application/use_cases/problem/sync'
 import updateProblem from '../../application/use_cases/problem/update'
 import viewAllProblem from '../../application/use_cases/problem/views'
 import { IProblemRepository } from '../../domain/repositories/problem'
@@ -102,11 +103,27 @@ export default function ProblemController(
       .catch(error => next(error))
   }
 
+  const fetchProblemSync = (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    const { last, skip, limit } = req.query
+    const vskip = parseInt(typeof skip === 'string' ? skip : '0', 10)
+    const vlimit = parseInt(typeof limit === 'string' ? limit : '10', 10)
+    const lastDate = new Date(last as string)
+
+    syncProblem(lastDate, vskip, vlimit, dbRepository)
+      .then(problem => res.json(problem))
+      .catch(error => next(error))
+  }
+
   return {
     fetchProblemById,
     fetchAllProblems,
     createNewProblem,
     updateExistingProblem,
     deleteProblem,
+    fetchProblemSync,
   }
 }

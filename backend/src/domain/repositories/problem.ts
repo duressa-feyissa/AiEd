@@ -26,6 +26,7 @@ export type IProblemRepository = (
     problem: ReturnType<typeof Problem>,
   ) => Promise<IProblem>
   createProblem: (problem: ReturnType<typeof Problem>) => Promise<IProblem>
+  syncProblem: (last: Date, skip: number, limit: number) => Promise<IProblem[]>
 }
 
 export default function problemDbRepository(
@@ -44,11 +45,15 @@ export default function problemDbRepository(
   const createProblem = (problem: ReturnType<typeof Problem>) =>
     repository.createProblem(problem)
 
+  const syncProblem = (last: Date, skip: number, limit: number) =>
+    repository.syncProblem(last, skip, limit)
+
   return {
     findById,
     viewAllProblem,
     deleteProblem,
     updateProblem,
     createProblem,
+    syncProblem,
   }
 }
