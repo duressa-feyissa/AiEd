@@ -46,14 +46,12 @@ export interface IProblem {
   answer: {
     type: (typeof answerType)[number]
     options?: {
-      choice: {
-        correct: boolean
-        data: {
-          type: (typeof content)[number]
-          value: string
-        }[]
+      correct: boolean
+      data: {
+        type: (typeof content)[number]
+        value: string
       }[]
-    }
+    }[]
     short?: string
     trueFalse?: boolean
     explanation?: {

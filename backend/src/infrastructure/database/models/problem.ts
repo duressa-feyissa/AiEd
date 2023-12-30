@@ -61,19 +61,17 @@ const problemSchema = new Schema<IProblem>({
   },
   answer: {
     type: { type: String, enum: ANSWER_TYPE_OPTIONS, required: true },
-    options: {
-      choice: [
-        {
-          correct: { type: Boolean, required: true, default: false },
-          data: [
-            {
-              type: { type: String, enum: CONTENT_OPTIONS, required: true },
-              value: { type: String, required: true },
-            },
-          ],
-        },
-      ],
-    },
+    options: [
+      {
+        correct: { type: Boolean, required: true, default: false },
+        data: [
+          {
+            type: { type: String, enum: CONTENT_OPTIONS, required: true },
+            value: { type: String, required: true },
+          },
+        ],
+      },
+    ],
     short: { type: String },
     trueFalse: { type: Boolean },
     explanation: [

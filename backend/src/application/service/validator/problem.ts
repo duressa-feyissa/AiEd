@@ -71,23 +71,21 @@ export function validateProblem(problem: any) {
       type: Joi.string()
         .valid(...ANSWER_TYPE_OPTIONS)
         .required(),
-      options: Joi.object({
-        choice: Joi.array().items(
-          Joi.object({
-            correct: Joi.boolean().required(),
-            data: Joi.array()
-              .items(
-                Joi.object({
-                  type: Joi.string()
-                    .valid(...CONTENT_OPTIONS)
-                    .required(),
-                  value: Joi.string().required(),
-                }),
-              )
-              .required(),
-          }),
-        ),
-      }),
+      options: Joi.array().items(
+        Joi.object({
+          correct: Joi.boolean().required(),
+          data: Joi.array()
+            .items(
+              Joi.object({
+                type: Joi.string()
+                  .valid(...CONTENT_OPTIONS)
+                  .required(),
+                value: Joi.string().required(),
+              }),
+            )
+            .required(),
+        }),
+      ),
       short: Joi.object({
         correct: Joi.string(),
       }),
