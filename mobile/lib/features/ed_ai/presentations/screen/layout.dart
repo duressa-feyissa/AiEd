@@ -1,11 +1,13 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/ed_ai/presentations/bloc/problem/problem_bloc.dart';
 import 'package:mobile/features/ed_ai/presentations/bloc/scroll/scroll_bloc.dart';
 import 'package:mobile/features/ed_ai/presentations/screen/Guide/home.dart';
 import 'package:mobile/features/ed_ai/presentations/screen/contest/home.dart';
 import 'package:mobile/features/ed_ai/presentations/screen/home/home.dart';
 import 'package:mobile/features/ed_ai/presentations/screen/problem/home.dart';
+import 'package:mobile/injection_container.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class Layout extends StatefulWidget {
@@ -108,8 +110,15 @@ class _LayoutState extends State<Layout> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ScrollBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ScrollBloc(),
+        ),
+        BlocProvider(
+          create: (context) => sl<ProblemBloc>(),
+        ),
+      ],
       child: SizedBox(
         child: BlocListener<ScrollBloc, ScrollState>(
           listener: (context, state) {

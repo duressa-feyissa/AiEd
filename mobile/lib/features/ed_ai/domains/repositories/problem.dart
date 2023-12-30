@@ -7,13 +7,20 @@ abstract class ProblemRepository {
     required String id,
   });
   Future<Either<Failure, List<Problem>>> list({
-    String? source,
-    String? value,
-    int? year,
-    String? target,
-    String? courses,
-    String? difficulty,
-    String? topic,
-    String? grade,
+    List<String>? source,
+    List<String>? value,
+    List<int>? year,
+    List<String>? target,
+    List<String>? courses,
+    List<String>? difficulty,
+    List<String>? topic,
+    List<String>? grade,
   });
+  Future<Either<Failure, String>> delete({
+    required String id,
+  });
+  Future<Either<Failure, Problem>> lastUpdate();
+
+  Future<Either<Failure, List<Problem>>> syncProblem(
+      {required DateTime lastUpdated, int? skip, int? limit});
 }

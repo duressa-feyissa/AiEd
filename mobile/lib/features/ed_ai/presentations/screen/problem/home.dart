@@ -6,6 +6,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/ed_ai/presentations/bloc/scroll/scroll_bloc.dart';
+import 'package:mobile/features/ed_ai/presentations/screen/problem/question.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 const image =
     "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
@@ -102,6 +104,8 @@ class _ProblemHomeState extends State<ProblemHome> {
     if (_scrollEndTimer != null && _scrollEndTimer!.isActive) {
       _scrollEndTimer!.cancel();
     }
+
+    if (currentSelected != 'default') selectMainFilter('default');
 
     if (_scrollController.position.userScrollDirection ==
         ScrollDirection.reverse) {
@@ -395,7 +399,18 @@ class _ProblemHomeState extends State<ProblemHome> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  PersistentNavBarNavigator
+                                      .pushNewScreenWithRouteSettings(
+                                    context,
+                                    settings: const RouteSettings(
+                                        name: '/contest/contest-info'),
+                                    screen: const Question(),
+                                    withNavBar: true,
+                                    pageTransitionAnimation:
+                                        PageTransitionAnimation.cupertino,
+                                  );
+                                },
                                 child: Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(

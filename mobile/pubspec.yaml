@@ -31,6 +31,7 @@ dependencies:
   http: ^1.1.0
   stream_transform: ^2.1.0
   bloc_concurrency: ^0.2.3
+  latext: ^0.2.0
 
 dev_dependencies:
   flutter_test:

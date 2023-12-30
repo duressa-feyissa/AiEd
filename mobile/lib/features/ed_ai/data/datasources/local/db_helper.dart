@@ -2,7 +2,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static const _databaseName = "edai.db";
+  static const _databaseName = "ethio.db";
   static final DatabaseHelper instance = DatabaseHelper._internal();
 
   factory DatabaseHelper() => instance;
@@ -59,9 +59,10 @@ class DatabaseHelper {
       question TEXT,
       answer TEXT,
       correctPoint INTEGER,
+      essayId TEXT,
       wrongPoint INTEGER,
-      createAt TEXT,
-      updateAt TEXT
+      createdAt TEXT,
+      updatedAt TEXT
     );
   ''');
   }

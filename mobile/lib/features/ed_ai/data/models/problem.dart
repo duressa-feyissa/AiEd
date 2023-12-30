@@ -14,8 +14,8 @@ class ProblemModel extends Problem {
     required String courses,
     required List<Content> question,
     required Answer answer,
-    required correctPoint,
-    required wrongPoint,
+    required int correctPoint,
+    required int wrongPoint,
     String? essayId,
     String? difficulty,
     String? topic,
@@ -23,6 +23,8 @@ class ProblemModel extends Problem {
     String? grade,
     String? value,
     int? year,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) : super(
           id: id,
           source: source,
@@ -39,6 +41,8 @@ class ProblemModel extends Problem {
           wrongPoint: wrongPoint,
           value: value,
           year: year,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
         );
 
   factory ProblemModel.fromJson(Map<String, dynamic> json) {
@@ -62,6 +66,12 @@ class ProblemModel extends Problem {
       wrongPoint: json['point'] != null ? json['point']['wrong'] ?? 0 : 0,
       value: json['source'] != null ? json['source']['value'] ?? '' : '',
       year: json['source'] != null ? json['source']['year'] ?? 0 : 0,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
+          : DateTime.now(),
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'])
+          : DateTime.now(),
     );
   }
 
@@ -82,6 +92,8 @@ class ProblemModel extends Problem {
       'wrongPoint': wrongPoint,
       'value': value,
       'year': year,
+      'createdAt': createdAt.toString(),
+      'updatedAt': updatedAt.toString(),
     };
   }
 
@@ -104,5 +116,7 @@ class ProblemModel extends Problem {
           wrongPoint: json['wrongPoint'],
           value: json['value'],
           year: json['year'],
+          createdAt: DateTime.parse(json['createdAt']),
+          updatedAt: DateTime.parse(json['updatedAt']),
         );
 }

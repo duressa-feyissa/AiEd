@@ -7,16 +7,27 @@ sealed class ProblemEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class DeleteProblem extends ProblemEvent {
+  final String id;
+
+  const DeleteProblem({
+    required this.id,
+  });
+
+  @override
+  List<Object> get props => [id];
+}
+
 class GetProblems extends ProblemEvent {
-  final String? source;
-  final String? value;
-  final int? year;
-  final String? target;
-  final String? courses;
-  final String? difficulty;
-  final String? topic;
-  final String? grade;
-  final String? unit;
+  final List<String>? source;
+  final List<String>? value;
+  final List<int>? year;
+  final List<String>? target;
+  final List<String>? courses;
+  final List<String>? difficulty;
+  final List<String>? topic;
+  final List<String>? grade;
+  final List<String>? unit;
 
   const GetProblems({
     this.source,
@@ -53,4 +64,23 @@ class GetProblem extends ProblemEvent {
 
   @override
   List<Object> get props => [id];
+}
+
+class GetLastUpdate extends ProblemEvent {
+  const GetLastUpdate();
+}
+
+class SyncProblem extends ProblemEvent {
+  final DateTime lastUpdated;
+  final int? skip;
+  final int? limit;
+
+  const SyncProblem({
+    required this.lastUpdated,
+    this.skip = 0,
+    this.limit = 1,
+  });
+
+  @override
+  List<Object> get props => [lastUpdated, skip ?? 0, limit ?? 1];
 }

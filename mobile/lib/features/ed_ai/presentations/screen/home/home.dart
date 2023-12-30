@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:mobile/features/ed_ai/presentations/bloc/problem/problem_bloc.dart';
 import 'package:mobile/features/ed_ai/presentations/bloc/scroll/scroll_bloc.dart';
 
 const image =
@@ -45,6 +45,7 @@ class _ContestInfoState extends State<Home> {
     super.initState();
 
     _scrollController.addListener(_scrollListener);
+    context.read<ProblemBloc>().add(const GetLastUpdate());
   }
 
   @override
@@ -64,71 +65,90 @@ class _ContestInfoState extends State<Home> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
           scrollDirection: Axis.vertical,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Well Come',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AdaptiveTheme.of(context).mode.isDark
-                              ? Colors.white.withOpacity(0.8)
-                              : Colors.black.withOpacity(0.4),
-                        ),
-                      ),
-                      Text(
-                        'Nafiu Ibrahim',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w800,
-                          color: AdaptiveTheme.of(context).mode.isDark
-                              ? Colors.white.withOpacity(0.8)
-                              : const Color.fromARGB(255, 0, 69, 104),
-                        ),
-                      )
-                    ],
-                  ),
-                  const Spacer(),
-                  Container(
-                      clipBehavior: Clip.hardEdge,
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Image.network(
-                        image,
-                        fit: BoxFit.cover,
-                      ))
-                ],
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.27,
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AdaptiveTheme.of(context).mode.isDark
-                      ? Colors.white.withOpacity(0.05)
-                      : Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: BlocListener<ProblemBloc, ProblemState>(
+            listener: (context, state) {
+              var dateTime = DateTime(2021, 1, 1);
+              if (state.lastUpdatedProblemStatus ==
+                      LastUpdatedProblemStatus.success ||
+                  state.lastUpdatedProblemStatus ==
+                      LastUpdatedProblemStatus.failure) {
+                if (state.syncfetch) {
+                  context.read<ProblemBloc>().add(SyncProblem(
+                        lastUpdated: LastUpdatedProblemStatus.success ==
+                                state.lastUpdatedProblemStatus
+                            ? state.lastUpdatedProblem?.updatedAt ?? dateTime
+                            : dateTime,
+                        skip: state.problemsToSync.length,
+                      ));
+                }
+              }
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [],
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Well Come',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: AdaptiveTheme.of(context).mode.isDark
+                                ? Colors.white.withOpacity(0.8)
+                                : Colors.black.withOpacity(0.4),
+                          ),
+                        ),
+                        Text(
+                          'Nafiu Ibrahim',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            color: AdaptiveTheme.of(context).mode.isDark
+                                ? Colors.white.withOpacity(0.8)
+                                : const Color.fromARGB(255, 0, 69, 104),
+                          ),
+                        )
+                      ],
                     ),
+                    const Spacer(),
+                    Container(
+                        clipBehavior: Clip.hardEdge,
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Image.network(
+                          image,
+                          fit: BoxFit.cover,
+                        ))
                   ],
                 ),
-              ),
-            ],
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.27,
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: AdaptiveTheme.of(context).mode.isDark
+                        ? Colors.white.withOpacity(0.05)
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

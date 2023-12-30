@@ -5,18 +5,20 @@ import 'package:sqflite/sqflite.dart';
 
 abstract class ProblemLocalDataSource {
   Future<List<ProblemModel>> update(List<ProblemModel> problems);
-  Future<void> delete(String id);
+  Future<String> delete(String id);
   Future<ProblemModel> getProblem(String id);
+
   Future<List<ProblemModel>> list({
-    String? source,
-    String? value,
-    int? year,
-    String? target,
-    String? courses,
-    String? difficulty,
-    String? topic,
-    String? grade,
+    List<String>? source,
+    List<String>? value,
+    List<int>? year,
+    List<String>? target,
+    List<String>? courses,
+    List<String>? difficulty,
+    List<String>? topic,
+    List<String>? grade,
   });
+  Future<ProblemModel> lastUpdated();
 }
 
 class ProblemLocalDataSourceImpl implements ProblemLocalDataSource {
@@ -27,12 +29,13 @@ class ProblemLocalDataSourceImpl implements ProblemLocalDataSource {
   final DatabaseHelper database;
 
   @override
-  Future<void> delete(String id) async {
+  Future<String> delete(String id) async {
     final db = await database.database;
     final result = await db.delete('problem', where: 'id = ?', whereArgs: [id]);
     if (result == 0) {
       throw CacheException();
     }
+    return id;
   }
 
   @override
@@ -49,86 +52,76 @@ class ProblemLocalDataSourceImpl implements ProblemLocalDataSource {
   @override
   Future<List<ProblemModel>> update(List<ProblemModel> problems) async {
     final db = await database.database;
-    final batch = db.batch();
 
-    for (final problem in problems) {
-      batch.insert(
-        'problem',
-        problem.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
-
-    final result = await batch.commit();
-
-    if (result.isEmpty) {
+    try {
+      await db.transaction((txn) async {
+        final batch = txn.batch();
+        for (var problem in problems) {
+          batch.insert(
+            'problem',
+            problem.toDbJson(),
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
+        await batch.commit();
+      });
+    } catch (e) {
       throw CacheException();
-    } else {
-      return problems;
     }
+
+    return problems;
   }
 
   @override
   Future<List<ProblemModel>> list({
-    String? source,
-    String? value,
-    int? year,
-    String? target,
-    String? courses,
-    String? difficulty,
-    String? topic,
-    String? grade,
+    List<String>? source,
+    List<String>? value,
+    List<int>? year,
+    List<String>? target,
+    List<String>? courses,
+    List<String>? difficulty,
+    List<String>? topic,
+    List<String>? grade,
   }) async {
     final db = await database.database;
     final sql = StringBuffer('SELECT * FROM problem WHERE 1 = 1');
     final args = <dynamic>[];
 
-    if (source != null) {
-      sql.write(' AND source = ?');
-      args.add(source);
+    void addCondition(
+        String columnName, List<String>? values, String condition) {
+      if (values != null && values.isNotEmpty) {
+        sql.write(
+            ' $condition $columnName IN (${List.filled(values.length, '?').join(', ')})');
+        args.addAll(values.map((value) => value.toLowerCase()));
+      }
     }
 
-    if (value != null) {
-      sql.write(' AND value = ?');
-      args.add(value);
-    }
-
-    if (year != null) {
-      sql.write(' AND year = ?');
-      args.add(year);
-    }
-
-    if (target != null) {
-      sql.write(' AND target = ?');
-      args.add(target);
-    }
-
-    if (courses != null) {
-      sql.write(' AND courses = ?');
-      args.add(courses);
-    }
-
-    if (difficulty != null) {
-      sql.write(' AND difficulty = ?');
-      args.add(difficulty);
-    }
-
-    if (topic != null) {
-      sql.write(' AND topic = ?');
-      args.add(topic);
-    }
-
-    if (grade != null) {
-      sql.write(' AND grade = ?');
-      args.add(grade);
-    }
+    addCondition('source', source, 'OR');
+    addCondition('value', value, 'OR');
+    addCondition('year', year?.map((e) => e.toString()).toList(), 'OR');
+    addCondition('target', target, 'AND');
+    addCondition('courses', courses, 'AND');
+    addCondition('difficulty', difficulty, 'AND');
+    addCondition('topic', topic, 'AND');
+    addCondition('grade', grade, 'AND');
 
     final result = await db.rawQuery(sql.toString(), args);
 
     if (result.isNotEmpty) {
       return result.map((e) => ProblemModel.fromDbJson(e)).toList();
     } else {
-      print(result);
+      throw CacheException();
+    }
+  }
+
+  @override
+  Future<ProblemModel> lastUpdated() async {
+    final db = await database.database;
+    final result =
+        await db.query('problem', orderBy: 'updatedAt DESC', limit: 1);
+    if (result.isNotEmpty) {
+      return ProblemModel.fromDbJson(result.first);
+    } else {
       throw CacheException();
     }
   }

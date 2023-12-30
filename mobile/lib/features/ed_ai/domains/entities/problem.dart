@@ -17,8 +17,9 @@ class Problem extends Equatable {
   final String? unit;
   final String? essayId;
   final String? value;
-
   final int? year;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   const Problem({
     required this.id,
@@ -36,6 +37,8 @@ class Problem extends Equatable {
     this.essayId,
     this.value,
     this.year,
+    this.createdAt,
+    this.updatedAt,
   });
 
   @override
@@ -55,6 +58,8 @@ class Problem extends Equatable {
         essayId,
         value,
         year,
+        createdAt,
+        updatedAt,
       ];
 
   Problem copyWith({
@@ -73,6 +78,8 @@ class Problem extends Equatable {
     String? essayId,
     String? value,
     int? year,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return Problem(
       id: id ?? this.id,
@@ -90,6 +97,8 @@ class Problem extends Equatable {
       essayId: essayId ?? this.essayId,
       value: value ?? this.value,
       year: year ?? this.year,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -110,6 +119,8 @@ class Problem extends Equatable {
       'essayId': essayId,
       'value': value,
       'year': year,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 }

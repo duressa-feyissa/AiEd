@@ -7,8 +7,13 @@ import 'package:mobile/features/ed_ai/data/datasources/local/problem.dart';
 import 'package:mobile/features/ed_ai/data/datasources/remote/problem.dart';
 import 'package:mobile/features/ed_ai/data/repositories/problem.dart';
 import 'package:mobile/features/ed_ai/domains/repositories/problem.dart';
+import 'package:mobile/features/ed_ai/domains/use_cases/problem/delete.dart'
+    as problem_delete;
 import 'package:mobile/features/ed_ai/domains/use_cases/problem/getById.dart';
+import 'package:mobile/features/ed_ai/domains/use_cases/problem/last.dart';
 import 'package:mobile/features/ed_ai/domains/use_cases/problem/list.dart';
+import 'package:mobile/features/ed_ai/domains/use_cases/problem/sync.dart'
+    as sync;
 import 'package:mobile/features/ed_ai/presentations/bloc/problem/problem_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,12 +25,18 @@ Future<void> init() async {
   sl.registerFactory(() => ProblemBloc(
         listProblem: sl(),
         problemGetById: sl(),
+        problemDelete: sl(),
+        lastUpdatedProblem: sl(),
+        syncProblem: sl(),
       ));
 
   // Use cases
   // - Problem
   sl.registerLazySingleton(() => ProblemGetById(sl()));
   sl.registerLazySingleton(() => ListProblem(sl()));
+  sl.registerLazySingleton(() => problem_delete.DeleteProblem(sl()));
+  sl.registerLazySingleton(() => LastUpdatedProblem(sl()));
+  sl.registerLazySingleton(() => sync.SyncProblem(sl()));
 
   // Repository
   // - Problem
