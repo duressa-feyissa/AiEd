@@ -1,4 +1,4 @@
-import { IUser } from '../domain/entities/user';
+import { IUser } from '../domain/entities/user'
 
 declare global {
   namespace Express {

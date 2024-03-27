@@ -6,10 +6,14 @@ import AuthController from '../controllers/auth'
 import authService from '../services/auth'
 
 export default function authRouter(router: Router) {
+  const controller = AuthController(
+    userDbRepository,
+    userRepositoryMongoDB,
+    authService,
+    authServiceInterface,
+  )
 
-    const controller = AuthController(userDbRepository, userRepositoryMongoDB, authService, authServiceInterface) 
+  router.post('/login', controller.loginUser)
 
-    router.post('/login', controller.loginUser)
-    
-    return router
+  return router
 }
